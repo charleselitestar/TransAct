@@ -1,0 +1,35 @@
+{% extends 'layouts/disabled.html' %}
+
+{% block content %}
+
+<style>
+    .disabled{
+        font-size: 40px;
+    }
+    h1{
+        background-color: red;
+        color: white;
+        font-size: 50px;
+        font-weight: bolder;
+        border-radius: 10px;
+    }
+</style>
+<div class="container">
+<center>
+    <h1>Account Not Avilable For Use , 
+    Account Has Been Disabled For Security Try Again Later</h1>
+        <div class="disabled">
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <div id="flash-message" class="flash">
+                {% for message in messages %}
+                <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% endwith %}
+        
+        </div>
+        </center>
+        </div>
+{% endblock %}

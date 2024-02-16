@@ -1,0 +1,20 @@
+{% extends 'layouts/accounts.html' %}
+
+{% block content %}
+
+<div class="container">
+    <center><h1>Recharge Account</h1></center>
+
+    <center>
+        <form method="post" action="{{url_for('recharge')}}" >
+            {{form.csrf_token}}
+            <label for="recharge_token">
+                {{form.token(class="form-control")}}
+            </label>
+            <br>
+            {{form.submit(class='btn btn-primary')}}
+        </form>
+    </center>
+</div>
+
+{% endblock %}

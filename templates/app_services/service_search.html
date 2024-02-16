@@ -1,0 +1,31 @@
+{% extends 'layouts/search.html' %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <form action="{{url_for('search_services')}}" method="post">
+                {{form.csrf_token}}
+                <div class="row">
+                    <div class="col-9">
+                        {{form.search_parameter(class="form-control")}}
+                    </div>
+                    <div class="col-3">
+                        {{form.submit(class="btn btn-primary")}}
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col"><a href="/service_category_search">category</a></div>
+        <div class="col"><a href="/service_position_search">position</a></div>
+        <div class="col"><a href="/service_location_search">location</a></div>
+        <div class="col"><a href="/service_salary_search">salary</a></div>
+    </div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends 'layouts/menu.html' %}
+    
+{% block content %}
+    <style>
+.container{
+    background-color: rgb(3, 3, 98);
+    display: grid;
+    padding: 20px;
+    margin-top: 80px;
+    margin-left: auto;
+    margin-right: auto;
+    grid-template-columns:1fr 1fr 1fr;
+    grid-template-rows: 1fr;
+    gap: 5px;
+    border-radius: 20px;
+}
+.max_width{
+    width: 95vw;
+}
+a{
+    display: grid;
+    grid-template-columns: 1fr 70px;
+    background-color: blue;
+    padding: 5px;
+    border-radius: 10px;
+    color: white;
+    text-decoration: none;
+    font-size: 25px;
+    }
+.container a:hover{
+    background-color: rgb(85, 85, 231);
+}           
+img{
+    width: 60px;
+    height: 60px;
+    background-color: transparent;
+    border-radius: 50px;
+}
+li{
+    color: white;
+}
+
+@media screen and (max-width: 768px){
+.container{
+    background-color: white;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    width: 95vw;
+    margin-top: 60px;
+    margin-bottom: 60px;
+
+}
+img{
+    width: 50px;
+    height: 50px;
+    background-color: transparent;
+    border-radius: 50px;
+}
+.container a{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background-color: blue;
+    padding: 5px;
+    border-radius: 10px;
+    color: white;
+    text-decoration: none;
+    font-size: 15px;
+    min-height: 55px;
+    max-height: 60px;
+    }
+}
+    </style>
+    <div class="container max_width">
+        <a href="/add_templates">Create Template <i><img src="/static/icons/layers.png" alt="layers"></i></a>
+        <a href="/merchant_history">History <i><img src="/static/icons/layers.png" alt="layers"></i></a>
+        <a href="/email">email <i><img src="/static/icons/email.png" alt="layers"></i></a>
+        <a href="/fund_account">Recharge <i><img src="/static/icons/layers.png" alt="layers"></i></a>
+        <a href="/pos">Pos <i><img src="/static/icons/layers.png" alt="layers"></i></a>
+        <a href="/admin_dashboard">Admin Dashboard<i><img src="/static/icons/layers.png" alt="layers"></i></a>
+        <a href="/collect_funds">Redeem Token<i><img src="/static/icons/layers.png" alt="layers"></i></a>
+        <a href="/load_account">Load Account<i><img src="/static/icons/layers.png" alt="layers"></i></a>
+        <a href="/redeem_paycode">Redeem PayCode<i><img src="/static/icons/layers.png" alt="layers"></i></a>
+    </div>
+    <script src="/static/heartbeat/heartbeat.js"></script>
+{% endblock %}

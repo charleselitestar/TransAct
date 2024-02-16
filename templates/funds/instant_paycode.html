@@ -1,0 +1,46 @@
+{% extends 'layouts/recharge.html' %}
+
+{% block content %}
+
+<style>
+    .container {
+        margin-top: 80px;
+    }
+
+    .success-container {
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+        padding: 15px;
+        border-radius: 5px;
+        text-align: center;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #0056b3;
+    }
+       @media (max-width: 768px){
+        .container{
+            margin-top: 50px;
+        }
+       }
+</style>
+
+<div class="container">
+    <div class="success-container">
+        <h1 class="display-4">Withdraw Success</h1>
+
+        <h4 class="mb-4">Voucher Code: {{ pay_code }}</h4>
+        <h4 class="mb-4">Token Amount: {{ currency_symbol }} {{pay_amount}} </h4>
+        <h4 class="mb-4">Account Balance: {{currency_symbol}} {{ remaining_balance }}</h4>
+
+        <a class="btn btn-primary btn-lg" href="/account">Okay</a>
+    </div>
+</div>
+
+{% endblock %}

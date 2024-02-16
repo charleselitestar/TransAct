@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elite_Doc's</title>
+    <link rel="stylesheet" href="/static/bootsrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/bootsrap/css/style.css">
+    <style>
+        @media screen and (max-width: 768px){
+            .btn-success{
+                padding: 0px;
+            }
+            .btn-danger{
+                padding: 0px;
+            }
+            .found{
+                margin-top: 5px;
+                padding-right: 3px;
+                color: white;
+                font-weight: bolder;
+                font-size: 20px;
+                text-align: right;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    {% if page_name == 'found products' %}
+    <div class="header">
+        <div class="row">
+            <div class="col-9">
+                <label for="logo" class="logo">{{page_name}}</label>
+            </div>
+            <div class="col">
+                <div class="found">{{total_products}}</div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="header">
+        <label for="logo" class="logo">{{ page_name }}</label>
+        <ul>
+            <li><a href="/search_products" class="btn btn-success ">Search</a></li>
+            <li><a href="/markets" class="btn btn-success ">List</a></li>
+            <li><a href="/menu" class="btn btn-danger">Exit</a></li>
+        </ul>
+    </div>
+    {% endif %}
+
+
+    <div class="container-fluid">
+        <!-- Your content here -->
+
+        {% block content %}{% endblock %}
+    </div>
+
+    <script src="/static/custom/js/script.js"></script> <!-- Link to the external JavaScript file -->
+    <script src="/static/bootsrap/js/bootstrap.min.js"></script>
+</body>
+
+</html>

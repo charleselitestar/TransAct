@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elite_Doc's</title>
+    <link rel="stylesheet" href="/static/bootsrap/css/bootstrap.min.css">
+    <style>
+
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <label for="logo" class="logo">{{ page_name }}</label>
+    <ul>
+        {% if page_name == "view product" %}
+        <li><a href="/markets" class="btn btn-success">Create Listing</a></li>
+        {% endif %}
+        <li><a href="/all" class="btn btn-danger">Exit</a></li>
+    </ul>
+</div>
+
+
+        <div class="container-fluid">
+            <!-- Your content here -->
+        
+            {% block content %}{% endblock %}
+        </div>
+        
+        <script src="/static/custom/js/script.js"></script> <!-- Link to the external JavaScript file -->
+        <script src="/static/bootsrap/js/bootstrap.min.js"></script>
+</body>
+</html>

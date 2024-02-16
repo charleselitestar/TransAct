@@ -1,0 +1,68 @@
+{% extends 'layouts/statements.html' %}
+
+{% block content %}
+
+<style>
+    @media (max-width: 768px) {
+        .container {
+            padding: 10px;
+            text-align: left;
+        }
+
+        .box {
+            background-color: aliceblue;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            text-transform: capitalize;
+            font-size: 25px;
+        }
+
+        .btn-primary {
+            font-weight: bolder;
+            width: 40vw;
+        }
+
+        .btn-success {
+            font-weight: bolder;
+            width: 40vw;
+        }
+        .btn-danger {
+            font-weight: bolder;
+            width: 40vw;
+        }
+        .btn-warning {
+            font-weight: bolder;
+            color: rgb(71, 1, 1);
+            width: 40vw;
+        }
+    }
+</style>
+
+<div class="container">
+    <center>
+        <h1> Details</h1>
+    </center>
+
+    <div class="box">
+        <h3>paycode status : {{paycode.status}}</h3>
+        <h3>amount : {{paycode.currency_symbol}} {{paycode.value}}</h3>
+        <h3>reference : {{paycode.reference}}</h3>
+        <h3>date : {{paycode.created_date}}</h3>
+        <h3>time : {{paycode.created_time}}</h3>
+    </div>
+    <center>
+        {% if paycode.status == 'Valid' %}
+<form method="POST" action="{{ url_for('reverse_token', token_id=paycode.id) }}">
+            <input type="hidden" name="_method" value="DELETE">
+            <button class="btn btn-warning" type="submit">Reverse</button>
+            <a class="btn btn-success" href="/my_paycodes">Okay</a>
+        </form>
+        {% else %}
+        <a class="btn btn-danger" href="/delete">Delete</a>
+        <a class="btn btn-success" href="/my_paycodes">Okay</a>
+        {% endif %}
+    </center>
+</div>
+
+{% endblock %}

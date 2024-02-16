@@ -1,0 +1,77 @@
+{% extends 'layouts/accounts.html' %}
+
+{% block content %}
+
+<style>
+    @media (max-width: 768px){
+        .container{
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: 1fr 1fr;
+            min-height: 70vh;
+            border-radius: 10px;
+            background-color: rgb(151, 161, 161);
+        }
+        .acc{
+            border: 1px solid black;
+            width: 80vw;
+            text-align: left;
+            background-color: rgb(219, 231, 241);
+            border-radius: 10px;
+            margin: 10px 10px 10px 10px;
+        }
+        .acc_form{
+            padding-top: 10px;
+            border: 1px solid black;
+            height: 30vh;
+            margin: 10px;
+            background-color: rgb(219, 231, 241);
+            border-radius: 10px;
+        }
+        .form-control{
+            width: 80vw;
+        }
+        label{
+            font-size: 20px;
+        }
+        h1{
+            background-color: rgb(197, 193, 193);
+            width: 50vw ;
+            border-radius: 10px;
+        }
+        }
+</style>
+
+<div class="container">
+    <div class="row">
+
+        <center>
+            <h1>WithDraw Funds</h1>
+        </center>
+        <div class="col acc_form">
+            <form action="{{url_for('withdraw_funds')}}" method="post">
+                {{form.csrf_token}}
+                <center>
+                    <label for="withdraw_amount">Enter Withdraw Amount
+                        {{form.withdraw_amount(class="form-control")}}
+                    </label>
+                    <br>
+                    {{form.submit(class="btn btn-primary")}}
+                </center>
+            </form>
+        </div>
+
+    <div class="col acc">
+        <center><h1>Acount Details</h1></center>
+        <cente  r>
+        <h5 class="{{balance}}" >account balance : {{account.currency_symbol}} {{account.account_balance}}</h5>
+        <h5>account name : {{account.account_name}}</h5>
+        <h5>account type : {{account.account_type}}</h5>
+        </center>
+    </div>
+
+
+</div>
+</div>
+
+{% endblock %}

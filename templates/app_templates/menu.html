@@ -1,0 +1,85 @@
+{% extends 'layouts/menu.html' %}
+    
+{% block content %}
+    <style>
+.container{
+    background-color: rgb(3, 3, 98);
+    display: grid;
+    padding: 20px;
+    margin-top: 80px;
+    margin-left: auto;
+    margin-right: auto;
+    grid-template-columns:1fr 1fr;
+    grid-template-rows: 1fr;
+    gap: 5px;
+    border-radius: 20px;
+}
+.max_width{
+    width: 95vw;
+}
+a{
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    background-color: blue;
+    padding: 5px;
+    border-radius: 10px;
+    color: white;
+    text-decoration: none;
+    font-size: 30px;
+    }
+.container a:hover{
+    background-color: rgb(85, 85, 231);
+}           
+img{
+    width: 60px;
+    height: 60px;
+    background-color: transparent;
+    border-radius: 50px;
+}
+li{
+    color: white;
+}
+
+@media screen and (max-width: 768px){
+.container{
+    background-color: white;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    width: 95vw;
+    margin-top: 60px;
+    margin-bottom: 60px;
+
+}
+img{
+    width: 50px;
+    height: 50px;
+    background-color: transparent;
+    border-radius: 50px;
+}
+.container a{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background-color: blue;
+    padding: 5px;
+    border-radius: 10px;
+    color: white;
+    text-decoration: none;
+    font-size: 15px;
+    min-height: 55px;
+    max-height: 60px;
+    }
+}
+    </style>
+    <div class="container max_width">
+        <a href="/document_menu"><i><img src="/static/icons/layers.png" alt="layers"></i>Documents</a>
+        <a href="/view_jobs"><i><img src="/static/icons/globe-2.png" alt="layers"></i>Jobs</a>
+        <a href="/view_services"><i><img src="/static/icons/globe-3.png" alt="layers"></i>Services</a>
+        <a href="/messages"><i><img src="/static/icons/message-square.png" alt="layers"></i>MessageBox</a>
+        <a href="/help"><i><img src="/static/icons/info.png" alt="layers"></i>help</a>
+        <a href="/all"> <i><img src="/static/icons/layers.png" alt="layers"></i>Markets</a>
+        <a href="/profile" class="ex"> <i><img src="/static/icons/person.png" alt="layers"></i>Profile</a>
+        <a href="/account" class="ex"> <i><img src="/static/icons/person.png" alt="layers"></i>Accounts</a>
+    </div>
+    <script src="/static/heartbeat/heartbeat.js"></script>
+{% endblock %}

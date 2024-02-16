@@ -1,0 +1,43 @@
+{% extends 'layouts/root.html' %}
+
+{% block content %}
+<link rel="stylesheet" href="/static/bootsrap/css/style.css">
+<div class="update_profile">
+    <div class="row">
+        <div class="col-12">
+            <form action="/profile/update" method="post" enctype="multipart/form-data">
+                <center>
+                <h1>New Profile Details</h1>
+                <input class="form-control" type="text" name="name" id="name" placeholder="Username" required>
+                <input class="form-control" type="email" name="email" id="email" placeholder="Email">
+                <input class="form-control" type="password" name="password" id="password" placeholder="Password">
+                <input class="form-control" type="password" name="confirm_password" id="confirm_password" placeholder="Confirm Password">
+                </center>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6 br lb mr">
+            <div class="col-3">
+            
+                <input class="form-control" type="file" name="main_image" id="main_image">
+          
+                <select name="role" id="role">
+                    <option value="admin">Admin</option>
+                    <option value="user">User</option>
+                    <!-- Add more options as needed -->
+                </select>
+            </div>
+        </div>
+        
+
+        <div class="col-6 br lb mr">
+            <textarea class="form-control" name="bio" id="bio" cols="50" rows="5" placeholder="Update your bio"></textarea>
+        </div>
+    </div>
+    <div class="col-12 br">
+        <button type="submit" class="btn btn-primary">Update</button>
+    </div>
+    </form>
+</div>
+
+{% endblock %}

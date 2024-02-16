@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Message</title>
+    <link rel="stylesheet" href="/static/bootsrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/custom/css/style.css">
+    <style>
+        .container{
+            margin-top: 10px;
+
+        }
+        .message-sender{
+            text-align: left;
+            font-size: 30px;
+            font-weight: bolder;
+        }
+        .message-body{
+            border: 0px;
+            background-color: lightgray;
+            width: 90vw;
+            text-align: left;
+            padding: 10px;
+            font-size: 25px;
+            border-radius: 20px;
+            min-height: 82vh;
+        }
+        .message-space{
+            background-color: aliceblue;
+            width: 98%;
+            min-height: 70vh;
+            margin: 5px;
+            border-radius: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col message-sender">
+                {{message.sender}}
+            </div>
+            <div class="container message-body">
+                <div class="row  message-space">
+                    <p>{{message.text}}</p>
+                </div>
+                <div class="row">
+                    <hr>
+                    <p>{{message.datestamp}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                    <a class="btn btn-primary" href="/messages">Back</a>
+                </div>
+                <div class="col">
+                    <form action="/contact" method="post">
+                        <input type="hidden" name="cantact_id" id="contact_id" value="{{message.sender}}">
+                        <button type="submit" class="btn btn-success">Message</button>
+                    </form>
+                </div>
+        </div>
+    </div>
+</body>
+</html>

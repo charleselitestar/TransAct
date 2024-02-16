@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>View Messages</title>
+</head>
+
+<body>
+    <h1>Welcome, {{ username }}!</h1>
+    <h2>Your Messages:</h2>
+    <ul>
+        {% for message in messages %}
+        <li>
+            <strong>From: {{ message.sender }}</strong><br>
+            {{ message.message }}
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+
+</html>

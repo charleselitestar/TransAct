@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elite_Doc's</title>
+    <link rel="stylesheet" href="/static/bootsrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/bootsrap/css/style.css">
+</head>
+<style>
+    @media screen and (max-width: 768px){
+    .to-right{
+        position: relative;
+        left: 20px;
+    }
+    .btn{
+        margin-top: 7px;
+    }
+}
+</style>
+
+<body>
+        {% if page_name == 'Trade Chat' %}
+        <div class="header-accounts header-desktop" id="mobile-content">
+            <div class="row">
+                <a class="btn btn-danger" href="/messages">Exit</a>
+            </div>
+        </div>
+        {% elif code == 'profile_page' %}
+        <div class="header" id="mobile-content">
+            <div class="row">
+                <div class="col-5">
+                    <label for="logo" class="logo">{{page_name}}</label>
+                </div>
+                <div class="col-2">
+                    <center>
+                        <a class="btn btn-primary" href="/update_profile">Update</a>
+                    </center>
+                </div>
+                <div class="col-3">
+                    <center>
+                        <a class="btn btn-primary  to-right" href="/all_activity">Activity</a>
+                    </center>
+                </div>
+                <div class="col-2">
+                    <center>
+                        <a class="btn btn-danger " href="/menu">Exit</a>
+                    </center>
+                </div>
+            </div>
+        </div>
+        <div class="header" id="desktop-content">
+            <label for="logo" class="logo">{{page_name}}</label>
+            <ul>
+                <li><a class="btn btn-primary" href="/update_profile">Update</a></li>
+                <li><a class="btn btn-primary" href="/productivity">Tips</a></li>
+                <li><a class="btn btn-primary" href="/all_activity">Activity</a></li>
+                <a class="btn btn-danger" href="/menu">Exit</a>
+            </ul>
+        </div>
+        {% elif page_name == "profile activity" %}
+        <div class="header" id="mobile-content">
+            <div class="row">
+                <div class="col-10">
+                    <label for="logo" class="logo">{{page_name}}</label>
+                </div>
+                <div class="col-2">
+                    <center>
+                        <a class="btn btn-danger" href="/menu">Exit</a>
+                    </center>
+                </div>
+            </div>
+        </div>
+        <div class="header" id="desktop-content">
+            <label for="logo" class="logo">{{page_name}}</label>
+            <ul>
+                <li><a class="btn btn-primary" href="/update_profile">Update</a></li>
+                <li><a class="btn btn-primary" href="/productivity">Tips</a></li>
+                <li><a class="btn btn-primary" href="/all_activity">Activity</a></li>
+                <a class="btn btn-danger" href="/menu">Exit</a>
+            </ul>
+        </div>
+        {% else %}
+           <a href="/menu" class="exit">Exit</a>
+        {% endif %}
+
+
+    <div class="container-fluid">
+        <!-- Your content here -->
+
+        {% block content %}{% endblock %}
+    </div>
+
+    <script src="/static/bootsrap/js/script.js"></script><!-- Link to the external JavaScript file -->
+    <script src="/static/bootsrap/js/bootstrap.min.js"></script>
+    <script src="/static/heartbeat/display.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/bootsrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/custom/css/style.css"> <!-- Link to the external CSS file -->
+    <style>
+        .mt {
+            margin-top: 70px;
+        }
+        @media screen and (max-width: 768px){
+        .btn-danger{
+                padding: 0px;
+                line-height: 20px;
+                margin-top: 10px;
+                margin-left: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    {% if page_name == 'statements' %}
+    <div class="header" id="mobile-content">
+        <div class="row">
+            <div class="col-9">
+                <label for="logo" class="logo">{{page_name}}</label>
+            </div>
+            <div class="col-3">
+                <a class="btn btn-danger" href="/account">Exit</a>
+            </div>
+        </div>
+    </div>
+    <div class="header" id="desktop-content">
+        <label for="logo" class="logo">{{page_name}}</label>
+        <ul>
+            <li><a class="btn btn-danger" href="/account">Exit</a></li>
+        </ul>
+    </div>
+
+    {% elif page_name == 'deposits' %}
+    <div class="header" id="mobile-content">
+        <div class="row">
+            <div class="col-9">
+                <label for="logo" class="logo">{{page_name}}</label>
+            </div>
+            <div class="col-3">
+            <a class="btn btn-danger" href="/fund_account">Exit</a>
+            </div>
+        </div>
+    </div>
+    <div class="header" id="desktop-content">
+        <label for="logo" class="logo">{{page_name}}</label>
+        <ul>
+            <li><a class="btn btn-danger" href="/fund_account">Exit</a></li>
+        </ul>
+    </div>
+    {% elif page_name == 'withdrawals' %}
+    <div class="header" id="mobile-content">
+        <div class="row">
+            <div class="col-9">
+                <label for="logo" class="logo">{{page_name}}</label>
+            </div>
+            <div class="col-3">
+                <a class="btn btn-danger" href="/withdraw_funds">Exit</a>
+            </div>
+        </div>
+    </div>
+    <div class="header" id="desktop-content">
+        <label for="logo" class="logo">{{page_name}}</label>
+        <ul>
+            <li><a class="btn btn-danger" href="/withdraw_funds">Exit</a></li>
+        </ul>
+    </div>
+    {% elif page_name == 'merchant deposits' %}
+    <div class="header" id="mobile-content">
+        <div class="row">
+            <div class="col-9">
+                <label for="logo" class="logo">{{page_name}}</label>
+            </div>
+            <div class="col-3">
+                <a class="btn btn-danger" href="/fund_account">Exit</a>
+            </div>
+        </div>
+    </div>
+    <div class="header" id="desktop-content">
+        <label for="logo" class="logo">{{page_name}}</label>
+        <ul>
+            <li><a class="btn btn-danger" href="/fund_account">Exit</a></li>
+        </ul>
+    </div>
+    {% elif page_name == 'merchant withdrawals' %}
+    <div class="header" id="mobile-content">
+        <div class="row">
+            <div class="col-9">
+                <label for="logo" class="logo">{{page_name}}</label>
+            </div>
+            <div class="col-3">
+                <a class="btn btn-danger" href="/collect_funds">Exit</a>
+            </div>
+        </div>
+    </div>
+    <div class="header" id="desktop-content">
+        <label for="logo" class="logo">{{page_name}}</label>
+        <ul>
+            <li><a class="btn btn-danger" href="/collect_funds">Exit</a></li>
+        </ul>
+    </div>
+    {% elif page_name == 'Transactions History' %}
+    <div class="header" id="mobile-content">
+        <div class="row">
+            <div class="col-9">
+                <label for="logo" class="logo">{{page_name}}</label>
+            </div>
+            <div class="col-3">
+                <a class="btn btn-danger" href="/merchant_menu">Exit</a>
+            </div>
+        </div>
+    </div>
+    <div class="header" id="desktop-content">
+        <label for="logo" class="logo">{{page_name}}</label>
+        <ul>
+            <li><a class="btn btn-danger" href="/merchant_menu">Exit</a></li>
+        </ul>
+    </div>
+    {% elif page_name == 'My Token History' %}
+    <div class="header" id="mobile-content">
+        <div class="row">
+            <div class="col-9">
+                <label for="logo" class="logo">{{page_name}}</label>
+            </div>
+            <div class="col">
+                <a class="btn btn-danger" href="/payments">Exit</a>
+            </div>
+        </div>
+    </div>
+    <div class="header" id="desktop-content">
+        <label for="logo" class="logo">{{page_name}}</label>
+        <ul>
+            <li><a class="btn btn-danger" href="/payments">Exit</a></li>
+        </ul>
+    </div>
+    {% elif page_name == 'My Payments' %}
+    <div class="header" id="mobile-content">
+        <div class="row">
+            <div class="col-9">
+                <label for="logo" class="logo">{{page_name}}</label>
+            </div>
+            <div class="col-3">
+                <center>
+                <a class="btn btn-danger" href="/payments">Exit</a>
+                </center>
+            </div>
+        </div>
+    </div>
+    <div class="header" id="desktop-content">
+        <label for="logo" class="logo">{{page_name}}</label>
+        <ul>
+            <li><a class="btn btn-danger" href="/payments">Exit</a></li>
+        </ul>
+    </div>
+
+
+    {% else %}
+    <div class="header">
+        <label for="logo" class="logo"> {{ page_name }} </label>
+        <ul>
+            <li><a class="btn btn-warning" href="/menu">Exit</a></li>
+        </ul>
+    </div>
+    {% endif %}
+
+
+    <div class="container-fluid">
+        <!-- Your content here -->
+
+        {% block content %}{% endblock %}
+    </div>
+
+    <script src="/static/heartbeat/display.js"></script>
+    <script src="/static/custom/js/script.js"></script> <!-- Link to the external JavaScript file -->
+    <script src="/static/bootsrap/js/bootstrap.min.js"></script>
+</body>
+
+</html>

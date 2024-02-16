@@ -1,0 +1,396 @@
+body{
+    background-image: url('/static/images/DreamShaper_v5_create_an_image_with_microsoft_word_and_excel_3.jpg');
+
+}
+label.logo {
+    color: white;
+    text-transform: capitalize;
+    font-size: 35px;
+    line-height: 60px;
+    padding: 0 15px;
+    font-weight: bold;
+}
+
+footer {
+    background-color: #dbd1d1;
+    color: #060202;
+    text-align: center;
+    padding: 10px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 100;
+    transition-duration: 0.5s;
+}
+
+footer:hover {
+    background-color: rgb(183, 183, 222);
+}
+
+.header {
+    background-color: blue;
+    height: 60px;
+    z-index: 100;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+.header ul {
+    float: right;
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+.header ul li {
+    display: inline-block;
+    line-height:-20px;
+    margin: 0 5px;
+}
+.header .exit {
+    background-color: rgb(255, 8, 0);
+    padding: 10px;
+    border-radius: 10px;
+    color: white;
+    text-decoration: none;
+    margin-right: 10px;
+    height: auto;
+    line-height: 20px;
+    font-size: 20px;
+    width: auto;
+    float: right;
+    margin-top: 10px !important;
+}
+.header .list {
+    background-color: rgb(51, 180, 235);
+    padding: 10px 20px 10px;
+    text-transform: capitalize;
+    border-radius: 10px;
+    color: rgb(254, 255, 255);
+    font-weight: bold;
+    text-decoration: none;
+    margin-right: 10px;
+    height: auto;
+    line-height: 20px;
+    font-size: 20px;
+    width: auto;
+    float: right;
+    margin-top: 10px !important;
+}
+.header .list:hover{
+    font-weight: bolder;
+    color: rgb(224, 209, 209);
+}
+.header .exit:hover {
+    background-color: rgb(173, 7, 2);
+    color: white;
+}
+
+.r { 
+    float: right;
+}
+
+
+.container {
+    box-shadow: 2px 2px 2px 2px gray;
+    margin-top: 10%;
+    padding: 10px;
+    padding-right: 20px;
+    width: 50vw;
+    min-height: 50vh;
+    background-color: rgb(246, 223, 223);
+}
+.container input{
+    margin-bottom: 10px;
+}
+.container input:hover{
+    border: 1px solid black;
+    background-color: rgb(228, 246, 240);
+
+}
+.container select{
+    margin-bottom: 10px;
+}
+.container select:hover{
+    border: 1px solid black;
+}
+img{
+    display: none;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+.checkbox{
+    text-align: left;
+    background-color: red;
+    position: relative;
+    right: 150px;
+    width: 20px;
+    float: left;
+}
+.link {
+    padding: 5px 8px;
+    background-color: rgb(226, 242, 247);
+    color: black;
+    text-decoration: none;
+    border-radius: 15px;
+}
+
+.link:hover {
+    background-color: lightblue;
+
+}
+
+.d {
+    margin-top: 0.4%;
+    margin-right: 5px;
+}
+
+.c {
+    margin-left: 5px;
+}
+
+.p {
+
+    height: 40px;
+    margin-bottom: 5px;
+    color: red;
+
+}
+.for-mobile{
+    display: none;
+}
+
+    
+input {
+    margin: 5px;
+}
+.index{
+    min-height: 50vh;
+}
+.index h4 {
+    margin-bottom: 80px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin-top: none;
+    font-size: 30px;
+    padding: 10px;
+    width: fit-content;
+    border-radius: 10px;
+}
+
+.index a {
+    margin-bottom: 50px;
+    padding: 5px;
+    position: relative;
+    background-color: rgb(130, 182, 245);
+    color: white;
+    font-weight: bolder;
+    font-size: 20px;
+    width: 10vw;
+    text-decoration: none;
+    border-radius: 30px;
+}
+.index a:hover{
+    background-color: rgb(57, 57, 246);
+    transition-duration: 0.5s;
+    color: white;
+}
+
+.index .link {
+    position: relative;
+    font-size: medium !important;
+    background-color: lightblue;
+    color: black;
+    font-weight: bold;
+    
+}
+
+.index p {
+    font-weight: bolder;
+    background-color: blue;
+    color: white;
+    padding: 5px;
+    border-radius: 10px;
+}
+.index img{
+    display: block;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+@media screen and (max-width: 768px) {
+    body{
+        padding: 0;
+        margin: 0;
+}
+label.logo {
+    color: white;
+    text-transform: capitalize;
+    font-size: 20px;
+    line-height: 40px;
+    padding: 0 15px;
+    font-weight: bold;
+}
+
+footer {
+    background-color: #dbd1d1;
+    color: #060202;
+    text-align: center;
+    padding: 5px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 100;
+    transition-duration: 0.5s;
+}
+
+footer:hover {
+    background-color: rgb(183, 183, 222);
+}
+
+.header {
+    background-color: blue;
+    height: 40px;
+    z-index: 100;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+.header ul {
+    float: right;
+}
+
+.header ul li {
+    display: inline-block;
+
+
+}
+
+.header .exit {
+    background-color: rgb(255, 8, 0);
+    padding: 5px;
+    height: auto;
+    border-radius: 10px;
+    color: white;
+    text-decoration: none;
+    line-height: 15px;
+    font-size: 18px;
+    width: 60px;
+    float: right;
+    margin-top: 8px !important;
+}
+
+.header .list {
+    background-color: rgb(7, 174, 43);
+    padding: 5px;
+    height: auto;
+    line-height: 15px;
+    font-size: 18px;
+    width: 60px;
+    float: right;
+    margin-top: 8px !important;
+}
+
+.header .exit:hover {
+    background-color: rgb(173, 7, 2);
+    color: white;
+}
+
+.h1 {
+    background-color: blue;
+    color: white;
+    width: 100vw;
+}
+.container{
+    margin: auto;
+    width: 93vw;
+    margin-top: 50px;
+    min-height: 70vh;
+    height: auto;
+    border-radius: 10px;
+    padding: 10px;
+}
+.container .col{
+    width: 100%;
+}
+.container input{
+    width: 87vw;
+    margin-bottom: 15px;
+}
+.container .btn-primary{
+    margin-bottom: 50px;
+}
+.container textarea{
+    width: 87vw;
+}
+.checkbox{
+    background-color: red;
+    width: 20px;
+    position: relative;
+    right: 215px;
+}
+.p {
+
+    height: 40px;
+    margin-bottom: 20px;
+    color: red;
+
+}
+.index{
+    background-color: rgb(226, 203, 203);
+    height: 80vh;
+    margin-top: none;
+    border-radius: 10px;
+}
+.index h1{
+    font-size: 30px;
+    margin-top: none;
+    padding: 10px;
+    width: fit-content;
+    border-radius: 20%;
+
+}
+.index a{
+    margin: 10px;
+    padding: 5px;
+    position: relative;
+    width: 35vw;
+    top: 50px;
+    background-color: blue;
+    color: white;
+    text-decoration: none;
+    border-radius: 25px;
+    border: 1px solid red;
+}
+.index .link{
+    position: relative;
+    top: 200px;
+    background-color: lightblue;
+}
+.index p{
+    font-weight: bolder;
+    background-color: blue;
+    color: white;
+    padding: 5px;
+    border-radius: 10px;
+}
+img{
+    display: block;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+.for-mobile{
+    display: block;
+}
+}

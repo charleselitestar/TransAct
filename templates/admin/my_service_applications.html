@@ -1,0 +1,39 @@
+{% extends 'layouts/profile_activity.html' %}
+
+{% block content %}
+
+<div class="container">
+        <div class="col">
+            <center><h3>My Service Applications <num>{{applied_services}}</h3></center>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Organization</th>
+                        <th>Position</th>
+                        <th>deadline</th>
+                        <th>status</th>
+                        <th>delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for my_service in my_service_applications %}
+                    <tr>
+                        <td>{{ my_service.company_name}}</td>
+                        <td>{{ my_service.application_position }}</td>
+                        <td>{{my_service.application_deadline}}</td>
+                        <td>{{my_service.status}}</td>
+                        <td>
+                            <form method="POST" action="{{ url_for('delete_service_application', service_application_id=my_service.id) }}">
+                                <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

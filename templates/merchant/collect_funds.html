@@ -1,0 +1,35 @@
+{% extends 'layouts/accounts.html' %}
+
+{% block content %}
+
+<style>
+    .container{
+        margin-top: 80px;
+    }
+    @media screen and (max-width: 768px) {
+    .container{
+        margin-top: 50px;
+    }
+}
+</style>
+
+<div class="container">
+    <center><h1>Redeem Token</h1></center>
+
+    <center>
+        <form action="/collect_funds" method="post">
+            {{form.csrf_token}}
+            <label for="voucher_code">
+                {{form.withdraw_code(class="form-control")}}
+            </label>
+            <br>
+            <label for="voucher_pin">
+                {{form.withdraw_pin(class="form-control")}}
+            </label>
+            <br>
+            <button type="submit" class="btn btn-primary">Done</button>
+        </form> 
+    </center>
+</div>
+
+{% endblock %}

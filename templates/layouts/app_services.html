@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elite_Doc's</title>
+    <link rel="stylesheet" href="/static/bootsrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/bootsrap/css/style.css">
+    <style>
+        @media (max-width: 768px){
+            .found{
+                color: white;
+                font-weight: bolder;
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="header">
+    <label for="logo" class="logo">{{ page_name }}</label>
+    <ul>
+        {% if page_name == 'services' %}
+        <li><a href="/search_for_services" class="btn btn-success">Search</a></li>
+        <li><a href="/list_services" class="btn btn-success ">List </a></li>
+        <li><a href="/menu" class="btn btn-danger">Exit</a></li>
+        {% elif page_name == 'found services' %}
+        <div class="found">{{total_services}}</div>
+        {% elif page_name == 'found jobs' %}
+        <div class="found">{{total_jobs}}</div>
+        {% elif page_name == 'jobs' %}
+        <li><a href="/search_for_jobs" class="btn btn-success">Search</a></li>
+        <li><a href="/list_jobs" class="btn btn-success ">List </a></li>
+        <li><a href="/menu" class="btn btn-danger">Exit</a></li>
+    </ul>
+    {% endif %}
+
+        
+</div>
+
+
+
+    <div class="container-fluid">
+        <!-- Your content here -->
+
+        {% block content %}{% endblock %}
+    </div>
+
+    <script src="/static/custom/js/script.js"></script> <!-- Link to the external JavaScript file -->
+    <script src="/static/bootsrap/js/bootstrap.min.js"></script>
+</body>
+
+</html>

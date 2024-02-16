@@ -1,0 +1,50 @@
+{% extends 'layouts/statements.html' %}
+
+{% block content %}
+
+<style>
+    @media (max-width: 768px) {
+        .container {
+            padding: 10px;
+            text-align: left;
+        }
+
+        .box {
+            background-color: aliceblue;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            text-transform: capitalize;
+            font-size: 25px;
+        }
+
+        .btn-primary {
+            font-weight: bolder;
+            width: 40vw;
+        }
+
+        .btn-success {
+            font-weight: bolder;
+            width: 40vw;
+        }
+    }
+</style>
+
+<div class="container">
+    <center>
+        <h1> Details</h1>
+    </center>
+
+    <div class="box">
+        <h3>recipient : {{payment.account_name}}</h3>
+        <h3>amount : {{payment.currency_symbol}} {{payment.payment_amount}}</h3>
+        <h3>reference : {{payment.reference}}</h3>
+        <h3>date : {{payment.payment_date}}</h3>
+        <h3>time : {{payment.payment_time}}</h3>
+    </div>
+    <center>
+        <a class="btn btn-success" href="/my_payments">Okay</a>
+    </center>
+</div>
+
+{% endblock %}

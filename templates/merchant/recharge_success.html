@@ -1,0 +1,41 @@
+{% extends 'layouts/accounts.html' %}
+
+{% block content %}
+
+<style>
+    .container {
+        margin-top: 80px;
+    }
+
+    .success-container {
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+        padding: 15px;
+        border-radius: 5px;
+        text-align: center;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #0056b3;
+    }
+</style>
+
+<div class="container">
+    <div class="success-container">
+        <h1 class="display-4">Recharge Success</h1>
+
+        <h4 class="mb-4">Previous Balance: {{ current_balance }}</h4>
+        <h4 class="mb-4">Recharge Amount: {{ token_value }}</h4>
+        <h4 class="mb-4">Available Funds: {{ remaining_balance }}</h4>
+
+        <a class="btn btn-primary btn-lg" href="/menu">Okay</a>
+    </div>
+</div>
+
+{% endblock %}

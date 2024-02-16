@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page_name }}</title>
+    <link rel="stylesheet" href="/static/bootsrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/custom/css/style.css"> <!-- Link to the external CSS file -->
+</head>
+
+<body>
+    {% if clue == "account" %}
+    <div  class="header-accounts header_desktop" id="mobile-content">
+        <div class="row">
+            <div class="col">
+                <center>
+                    <a class="btn btn-primary to_right-4" href="/payments">Pay</a>
+                </center>
+            </div>
+            <div class="col">
+                <center>
+                    <a class="btn btn-primary to_right-3" href="/withdraw_funds">Withdraw</a>
+                </center>
+            </div>
+            <div class="col">
+                <center>
+                    <a class="btn btn-primary to_right-2" href="/fund_account">Recharge</a>
+                </center>
+            </div>
+            <div class="col">
+                <center>
+                    <a class="btn btn-primary to_right" href="/statements">Stats</a>
+                </center>
+            </div>
+            <div class="col">
+                <center>
+                    <a class="btn btn-danger" href="/menu">Exit</a>
+                </center>
+            </div>
+        </div>
+    </div>
+        <div class="header" id="desktop-content">
+            <label for="logo" class="logo">{{page_name}}</label>
+            <ul>
+
+                <li><a class="btn btn-primary" href="/payments">Pay</a></li>
+                <li><a class="btn btn-primary" href="/withdraw_funds">Withdraw</a></li>
+                <li><a class="btn btn-primary" href="/fund_account">Recharge</a></li>
+                <li><a class="btn btn-primary" href="/statements">Stats</a></li>
+                <a class="btn btn-danger" href="/menu">Exit</a>
+            </ul>
+        </div>
+
+
+    {% elif page_name == 'fund account' %}
+    <div class="header-accounts" id="mobile-content">
+        <div class="row">
+            <div class="col-5">
+                <label for="logo" class="logo">{{page_name}}</label>
+            </div>
+            <div class="col-2">
+                <center>
+            <a class="btn btn-success to_right-1" href="/deposits">Deposits</a>
+                </center>
+            </div>
+            <div class="col-2">
+                <center>
+            <a class="btn btn-success to_right-1" href="/payment_plaque">Plaque</a>
+                </center>
+            </div>
+            <div class="col-2">
+                <center>
+            <a class="btn btn-danger to_right-1" href="/account">Exit</a>
+                </center>
+            </div>
+        </div>
+    </div>
+    <div class="header" id="desktop-content">
+    <label for="logo" class="logo">{{page_name}}</label>
+    <ul>
+        <li><a class="btn btn-success to_right-1" href="/deposits">Deposits</a></li>
+        <li><a class="btn btn-success to_right-1" href="/payment_plaque">Plaque</a></li>
+        <li><a class="btn btn-danger to_right-1" href="/account">Exit</a></li>
+    </ul>
+    </div>
+    {% elif page_name == 'payments' %}
+    <div class="header-accounts" id="mobile-content">
+        <div class="row">
+            <div class="col-5">
+                <label for="logo" class="logo">{{page_name}}</label>
+            </div>
+            <div class="col-2">
+                <center>
+                <a class="btn btn-success to_right" href="/my_payments">History</a>
+                </center>
+            </div>
+            <div class="col-2">
+                <center>
+                <a class="btn btn-primary to_right" href="/pay_store">PayCode</a>
+                </center>
+            </div>
+            <div class="col-2">
+                <center>
+                <a class="btn btn-danger to_right-1" href="/account">Exit</a>
+                </center>
+            </div>
+        </div>
+    </div>
+    <div class="header" id="desktop-content">
+        <label for="logo" class="logo">{{page_name}}</label>
+        <ul>
+            <li><a class="btn btn-success to_right" href="/my_payments">History</a></li>
+            <li><a class="btn btn-primary to_right" href="/pay_store">PayCode</a></li>
+            <li><a class="btn btn-danger to_right-1" href="/account">Exit</a></li>
+        </ul>
+    </div>
+    {% elif page_name == 'withdraw funds' %}
+    <div class="header-accounts" id="mobile-content">
+        <div class="row">
+            <div class="col-6">
+                <label for="logo" class="logo">{{page_name}}</label>
+            </div>
+            <div class="col-3">
+                <center>
+                <a class="btn btn-success to_right" href="/withdrawals">Withdrawals</a>
+                </center>
+            </div>
+            <div class="col-2">
+                <center>
+                <a class="btn btn-danger to_right-1" href="/account">Exit</a>
+                </center>
+            </div>
+        </div>
+    </div>
+    <div class="header" id="desktop-content">
+        <label for="logo" class="logo">{{page_name}}</label>
+        <ul>
+            <li><a class="btn btn-success to_right" href="/withdrawals">Withdrawals</a></li>
+            <li><a class="btn btn-danger to_right-1" href="/account">Exit</a></li>
+        </ul>
+    </div>
+    {% elif page_name == 'Instant Pay' %}
+    <div class="header-accounts" id="mobile-content">
+        <div class="row">
+            <div class="col-7">
+                <label for="logo" class="logo">{{page_name}}</label>
+            </div>
+            <div class="col-2">
+                <center>
+                    <a class="btn btn-primary" href="/my_paycodes">PayCodes</a>
+                </center>
+            </div>
+            <div class="col-2">
+                <center>
+                    <a class="btn btn-danger" href="/payments">Exit</a>
+                </center>
+            </div>
+        </div>
+    </div>
+    <div class="header" id="desktop-content">
+        <label for="logo" class="logo">{{page_name}}</label>
+        <ul>
+            <li><a class="btn btn-primary" href="/my_paycodes">PayCodes</a></li>
+            <li><a class="btn btn-danger" href="/payments">Exit</a></li>
+        </ul>
+    </div>
+    {% elif page_name == 'App Agent' %}
+    <div class="header-accounts" id="mobile-content">
+        <div class="row">
+            <div class="col-5">
+                <label for="logo" class="logo">{{page_name}}</label>
+            </div>
+            <div class="col-2">
+                <center>
+                    <a class="btn btn-success to_right" href="/merchant_menu">Menu</a>
+                </center>
+            </div>
+            <div class="col-2">
+                <center>
+                    <a class="btn btn-primary to_right" href="/statements">Stats</a>
+                </center>
+            </div>
+            <div class="col-2">
+                <center>
+                    <a class="btn btn-danger to_right-1" href="/logout">LogOut</a>
+                </center>
+            </div>
+        </div>
+    </div>
+    <div class="header" id="desktop-content">
+        <label for="logo" class="logo">{{page_name}}</label>
+        <ul>
+            <li><a class="btn btn-success to_right" href="/merchant_menu">Menu</a></li>
+            <li><a class="btn btn-primary to_right" href="/statements">Stats</a></li>
+            <li><a class="btn btn-danger to_right-1" href="/logout">LogOut</a></li>
+        </ul>
+    </div>
+    {% elif page_name == 'load account' %}
+    <div class="header-accounts" id="mobile-content">
+        <div class="row">
+            <div class="col-9">
+                <label for="logo" class="logo">{{page_name}}</label>
+            </div>
+            <div class="col-3">
+                    <a class="btn btn-danger " href="/merchant_menu">Exit</a>
+            </div>
+        </div>
+    </div>
+    <div class="header" id="desktop-content">
+        <label for="logo" class="logo">{{page_name}}</label>
+        <ul>
+            <li><a class="btn btn-danger " href="/merchant_menu">Exit</a></li>
+        </ul>
+    </div>
+    {% elif page_name == 'Redeem PayCode' %}
+    <div class="header-accounts" id="mobile-content">
+        <div class="row">
+        <div class="col-9">
+            <label for="logo" class="logo">{{page_name}}</label>
+        </div>
+        <div class="col">
+            <a class="btn btn-danger " href="/merchant_menu">Exit</a>
+        </div>
+        </div>
+    </div>
+    <div class="header" id="desktop-content">
+        <label for="logo" class="logo">{{page_name}}</label>
+        <ul>
+            <li><a class="btn btn-danger " href="/merchant_menu">Exit</a></li>
+        </ul>
+    </div>
+    {% elif page_name == 'recharge' %}
+    <div class="header-accounts" id="mobile-content">
+        <div class="row">
+            <div class="col-9">
+                <label for="logo" class="logo">{{page_name}}</label>
+            </div>
+            <div class="col-3">
+                    <a class="btn btn-danger " href="/merchant_menu">Exit</a>
+            </div>
+        </div>
+    </div>
+    <div class="header" id="desktop-content">
+        <label for="logo" class="logo">{{page_name}}</label>
+        <ul>
+            <li><a class="btn btn-danger " href="/merchant_menu">Exit</a></li>
+        </ul>
+    </div>
+    {% elif page_name == 'redeem funds' %}
+    <div class="header-accounts" id="mobile-content">
+        <div class="row">
+            <div class="col-7">
+                <label for="logo" class="logo">{{page_name}}</label>
+            </div>
+            <div class="col-2">
+                <center>
+                    <a class="btn btn-primary" href="/withdrawals">History</a>
+                </center>
+            </div>
+            <div class="col-2">
+                <center>
+                    <a class="btn btn-danger to-right" href="/merchant_menu">Exit</a>
+                </center>
+            </div>
+        </div>
+    </div>
+    <div class="header" id="desktop-content">
+        <label for="logo" class="logo">{{page_name}}</label>
+        <ul>
+            <li><a class="btn btn-primary" href="/withdrawals">History</a></li>
+            <li><a class="btn btn-danger to-right" href="/merchant_menu">Exit</a></li>
+        </ul>
+    </div>
+    {% elif page_name == 'POS System' %}
+    <div class="header-accounts" id="mobile-content">
+        <div class="row">
+            <div class="col-7">
+                <label for="logo" class="logo">{{page_name}}</label>
+            </div>
+            <div class="col-2">
+                <center>
+                    <a class="btn btn-primary" href="">Clients</a>
+                </center>
+            </div>
+            <div class="col-2">
+                <center>
+                    <a class="btn btn-danger to-right" href="/merchant_menu">Exit</a>
+                </center>
+            </div>
+        </div>
+    </div>
+    <div class="header" id="desktop-content">
+        <label for="logo" class="logo">{{page_name}}</label>
+        <ul>
+            <li><a class="btn btn-primary" href="">Clients</a></li>
+            <li><a class="btn btn-danger to-right" href="/merchant_menu">Exit</a></li>
+        </ul>
+    </div>
+
+
+
+
+    {% else %}
+    <div class="header">
+            <li><a class="btn btn-danger" href="/menu">Exit</a></li>
+        </ul>
+    </div>
+    {% endif %}
+
+
+    <div class="container-fluid">
+        <!-- Your content here -->
+        {% block content %}{% endblock %}
+    </div>
+    <br>
+    <footer>
+        <div class="p">
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <div id="flash-message" class="flash">
+                {% for message in messages %}
+                <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% endwith %}
+
+        </div>
+    </footer>
+    <script src="/static/heartbeat/display.js"></script>
+    <script src="/static/custom/js/script.js"></script> <!-- Link to the external JavaScript file -->
+    <script src="/static/bootsrap/js/bootstrap.min.js"></script>
+</body>
+
+
+
+
+
+</html>

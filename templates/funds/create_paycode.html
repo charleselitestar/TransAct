@@ -1,0 +1,53 @@
+{% extends 'layouts/accounts.html' %}
+
+{% block content %}
+<style>
+    .container2{
+        width: auto !important;
+    }
+    .form-control{
+        width: 35vw;
+    }
+    @media screen and (max-width: 768px) {
+    .container{
+        margin-top: 50px;
+    }
+    .form-control{
+        width: auto;
+    }
+    .container2 h3{
+        font-size: 22px;
+    }
+    .container2 .row{
+        width: auto;
+    }
+}
+</style>
+
+<div class="container">
+    <center><h1>Instore Pay</h1></center>
+
+    <hr>
+    <div class="container2">
+        <div class="row">
+        <center>
+                <div class="col-12 {{balance}}"><h3>Balance : {{formated_account_balance}}</h3></div>
+            </center>
+        </div>
+        </div>
+    <center>
+        <form action="{{url_for('pay_store')}}" method="post">
+            {{form.csrf_token}}
+            <label for="pay_amount">
+                {{form.pay_amount(class="form-control")}}
+            </label>
+            <br>
+            {{form.submit(class="btn btn-primary")}}
+            <br>
+            <br>
+            <p>Enter The Amount You Wanna Pay Above</p>
+        </form>
+    </center>
+</div>
+<script src="/static/heartbeat/heartbeat.js"></script>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'layouts/product_view.html' %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            {{ review_product.name}}
+            {{ review_product.id }}
+        </div>
+        <div class="col">
+                <form action="/review_product" method="post">
+                    <center>Product Review</center>
+                    <input type="text" name="review_text" id="review_text" placeholder="comment">
+                    <br>
+                    <input type="text" name="rating" id="rating" placeholder="rating">
+                    <br>
+                    <input type="hidden" name="product_id" id="product_id" value="{{review_product.id}}">
+                    <button type="submit">Done</button>
+                </form>
+            </div>
+        </div>
+</div>
+
+{% endblock %}

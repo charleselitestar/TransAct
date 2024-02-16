@@ -1,0 +1,33 @@
+{% extends 'layouts/job_view.html' %}
+
+{% block content %}
+
+<div class="container view_job">
+    <div class="row">
+        <div class="col">
+            {% if view_job.company_logo %}
+            <img src="{{ url_for('static', filename='uploads/' + view_job.company_logo) }}"
+                alt="Company Logo">
+            {% else %}
+            <!-- Provide a fallback image using the user's profile picture -->
+            <img src="{{ url_for('static', filename='uploads/' + current_user.main_image) }}"
+                alt="User Profile Picture">
+            {% endif %}
+        </div>
+        <div class="col">
+            <ol style="list-style-type: none;">
+                <li><h1>Company Name :{{view_job.company_name}}</h1></li>
+                <li> <strong class="name" name="application_status" id="application_status">application status : {{ application_status.status }}</strong></li>
+                <li><strong class="small_text"></strong></li>
+                <li><strong class="name">applied position : {{view_job.position}}</strong></li>
+                <li>Basic Salary {{view_job.basic_salary}}</li>
+                <li>company website <a href="https://{{view_job.company_website}}">{{view_job.company_website}}</a></li>
+                <li>job requirements : {{view_job.job_requirements}}</li>
+                <li>qualifications : {{view_job.qualifications}}</li>
+                <li>responsibilities : {{view_job.responsibilities}}</li>
+            </ol>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

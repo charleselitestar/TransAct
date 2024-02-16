@@ -1,0 +1,51 @@
+{% extends 'layouts/admin.html' %}
+
+{% block content %}
+
+<div class="profile">
+    <div class="row">
+        <div class="col-6 ">
+                {% if user.main_image %}
+                <img src="{{ url_for('static', filename='uploads/' + user.main_image) }}" alt="main_image">
+                {% else %}
+                <!-- Provide a fallback image or message if template.main_image is None -->
+                <img src="{{ url_for('static', filename='uploads/placeholder_female.jpeg') }}" alt="main_image">
+                {% endif %}
+        </div>
+
+        <div class="col-6 panel">
+            <center><h1>Detatils</h1></center>
+            <div class="row">
+                <div class="col-5">
+            <p>First Name : {{user.first_name|capitalize}}</p>
+            <p>Last Name : {{user.last_name|capitalize}}</p>
+            <p>Usernsme : {{user.user_name}}</p>
+
+                </div>
+                <div class="col-7">
+                    <p>Contact : {{user.phone_number}}</p>
+                    <p>Email : {{user.email}}</p>
+                    <p>Social Media : {{user.social_media_links}}</p>
+                </div>
+            </div>
+            <p class="bio">Bio : {{user.bio|capitalize}}</p>
+        </div>
+    </div>
+    <br>
+<div class="row">
+        <div class="col-4 lb margin">
+            <p>Address : {{user.address}}</p>
+
+        </div>
+        <div class="col-4 lb margin">
+            <p>Created : {{user.registration_date}}</p>
+            <p>last login : {{last_login.last_login}}</p>
+        </div>
+        <div class="col-4 lb margin">
+            <p>Status : {{user.status|capitalize}}</p>
+            <p>Type : {{user.role|capitalize}}</p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,158 @@
+{% extends 'layouts/create_document.html' %}
+
+{% block content %}
+
+<style>
+    label{
+    font-size: 25px;
+    text-transform: capitalize;
+    }
+    .form-control{
+        margin-bottom: 10px;
+        width: 25vw;
+    }
+    .text{
+        width: 40vw;
+    }
+    @media screen and (max-width: 768px){
+        .form-control{
+            width: 80vw;
+        }
+        .first_part{
+            margin-top: 50px;
+            margin-bottom: 10px;
+        }
+        .second_part{
+            margin-top: 0px;
+        }
+    }
+</style>
+
+<div class="container">
+    <div class="d -grid">
+<div class="row">
+<div class="col gray first_part">
+<div class="h5">Product details</div>
+<form action="{{url_for('markets')}}" method="POST" enctype="multipart/form-data"> 
+{{form.csrf_token}}
+    <label for="product_name" >Product Name
+        {{form.name(class="form-control")}}
+    </label>
+    <br>
+    <label for="category">category
+        {{form.category(class="form-control")}}
+    </label>
+<br>
+    <label for="price">price
+        {{form.price(class="form-control")}}
+    </label>
+    <br>
+    <label for="discount_price">discount price
+        {{form.discount_price(class="form-control")}}
+    </label>
+    <br>
+    <label for="instock">in stock
+        {{form.in_stock}}
+    </label>
+    <br>
+    <label for="is_available">availability
+        {{form.is_available}}
+    </label>
+    <br>
+    <label for="color">color
+        {{form.color(class="form-control")}}
+    </label>
+    <br>
+    <label for="material">material
+        {{form.material(class="form-control")}}
+    </label>
+    <br>
+    <div class="h6">
+        <label for="features">features
+            {{form.features(class="form-control")}}
+        </label>
+        <br>
+        <label for="dimentions">dimentions
+            {{form.dimentions(class="form-control")}}
+        </label>
+        <br>
+        <label for="brand">brand
+            {{form.brand(class="form-control")}}
+        </label>
+        <br>
+        <label for="manufacturer">manufacturer
+            {{form.manufacturer(class="form-control")}}
+        </label>
+        <br>
+    </div>
+    </label>
+    <div class="h3">PickUp Address</div>
+    <label for="billing_state">state
+        {{form.billing_state(class="form-control")}}
+    </label>
+    <br>
+    <label for="billing_city">city
+        {{form.billing_city(class="form-control")}}
+    </label>
+    <br>
+    <label for="billing_postal_code">postal code
+        {{form.billing_postal_code(class="form-control")}}
+    </label>
+    <br>
+    <label for="billing_street"> street
+        {{form.billing_street(class="form-control")}}
+    </label>
+
+    <br>
+    <label for="description" >description
+       {{form.description(class="form-control text")}}
+    </label>
+    <br>
+
+</div>
+<div class="col gray second_part">
+<div class="h5">Additional details</div>
+<label for="weight">weight
+    {{form.weight(class="form-control")}}
+</label>
+<br>
+<label for="delivery">delivery
+    {{form.delivery}}
+</label>
+<br>
+<div class="h5">Product Images</div>
+<label for="main_image0">image 1
+    {{form.main_image0(class="form-control")}}
+</label>
+<br>
+<label for="main_image">image 2
+    {{form.main_image(class="form-control")}}
+</label>
+<br>
+<label for="primary_image"> image 3
+    {{form.primary_image(class="form-control")}}
+</label>
+<br>
+<label for="secondary_image"> image 4
+    {{form.secondary_image(class="form-control")}}
+</label>
+<br>
+
+<div class="h6">
+    <center></center>
+</div>
+
+<label for="additional_details"> additional details
+    {{form.additional_details(class="form-control text")}}
+</label>
+<br>
+<hr>
+{{form.submit(class="btn btn-primary r")}}
+</form>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+{% endblock %}

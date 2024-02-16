@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page_name }}</title>
+    <link rel="stylesheet" href="/static/bootsrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/custom/css/style.css"> <!-- Link to the external CSS file -->
+    <style>
+            @media (max-width: 768px){
+                .btn-primary{
+                    padding: 0px !important;
+                }
+                .btn-success{
+                    padding: 0px ;
+                }
+                .btn-danger{
+                    padding: 0px ;
+                }
+    }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <label for="logo" class="logo"> {{ page_name }} </label>
+        <ul>
+            {% if page_name == 'payments' %}
+            <li><a class="btn btn-primary" href="/my_payments">History</a></li>
+            <li><a class="btn btn-primary" href="/pay_store">PayCode</a></li>
+            <li><a class="btn btn-danger" href="/account">Exit</a></li>
+            {% elif page_name == 'My Token History' %}
+            <li><a class="btn btn-danger" href="/payments">Exit</a></li>
+            {% else %}
+            <li><a class="btn btn-danger" href="/menu">Exit</a></li>
+            {% endif %}
+        </ul>
+    </div>
+    <div class="container-fluid">
+        <!-- Your content here -->
+        {% block content %}{% endblock %}
+    </div>
+    <br>
+    <footer>
+        <div class="p">
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <div id="flash-message" class="flash">
+                {% for message in messages %}
+                <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% endwith %}
+
+        </div>
+    </footer>
+    <script src="/static/custom/js/script.js"></script> <!-- Link to the external JavaScript file -->
+    <script src="/static/bootsrap/js/bootstrap.min.js"></script>
+</body>
+
+</html>

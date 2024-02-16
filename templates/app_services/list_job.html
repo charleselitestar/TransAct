@@ -1,0 +1,138 @@
+{% extends 'layouts/create_document.html' %}
+
+{% block content %}
+
+<style>
+    label{
+        font-size: 25px;
+        text-transform: capitalize;
+    }
+    .form-control{
+        margin-bottom: 10px;
+        width: 25vw;
+    }
+    .text{
+        width: 40vw;
+    }
+    @media screen and (max-width: 768px){
+        .gray{
+            width: 1000px !important;
+        }
+        .form-control{
+            width: 80vw;
+            margin: 10px;
+        }
+        label{
+        font-size: 20px;
+        text-transform: capitalize;
+        font-weight: bold;
+    }
+    .first_part{
+        margin-bottom: 0px;
+    }
+    .second_part{
+        margin-top: 10px;
+    }
+    }
+</style>
+
+<div class="container">
+<div class="row">
+<div class="col gray first_part">
+    <div class="h5">Employer Details</div>
+    <form action="{{url_for('list_jobs')}}" method="POST" enctype="multipart/form-data">
+        {{form.csrf_token}}
+        
+        <label for="company_name">company name
+            {{form.company_name(class="form-control")}}
+        </label>
+        <br>
+        <label for="company_website">company website
+            {{form.company_website(class="form-control")}}
+        </label>
+        <br>
+        <label for="company_logo">company logo
+            {{form.company_logo(class="form-control")}}
+        </label>
+        <br>
+        <label for="contact_details">contact details
+            {{form.contact_details(class="form-control")}}
+        </label>
+        <br>
+        <label for="job_location">job location
+            {{form.job_location(class="form-control")}}
+        </label>
+        <br>
+        <label for="working hours">working hours
+            {{form.hours(class="form-control")}}
+        </label>
+        <br>
+        <label for="basic_sallary">basic sallary
+            {{form.basic_salary(class="form-control")}}
+        </label>
+        <br>
+        <label for="sallary_range">avarage sallary
+            {{form.salary_range(class="form-control")}}
+        </label>
+
+        <br>
+        <label for="benefits">benefits
+            {{form.benefits(class="form-control")}}
+        </label>
+
+        <br>
+        <label for="employment_type">employment type
+            {{form.employment_type(class="form-control")}}
+        </label>
+        <br>
+        <br>
+    <label for="job_description">job description
+        {{form.description(class="form-control text")}}
+    </label>
+
+
+</div>
+<div class="col gray second_part">
+    <div class="h5">Job Deatails</div>
+    <label for="job_position">job position
+        {{form.position(class="form-control")}}
+    </label>
+    <br>
+    <label for="job_requirments">job requirments
+        {{form.job_requirements(class="form-control")}}
+    </label>
+    <br>
+    <label for="application_deadline">apply by
+       {{form.application_deadline(class="form-control")}}
+    </label>
+    <br>
+    <label for="application_email">application email
+        {{form.application_email(class="form-control")}}
+    </label>
+    <br>
+    <label for="qualifications">qualifications
+        {{form.qualifications(class="form-control")}}
+    </label>
+    <br>
+    <label for="responsibilities">responsibilities
+        {{form.responsibilities(class="form-control")}}
+    </label>
+    <br>
+    <label for="experience_level">experience level
+        {{form.experience_level(class="form-control")}}
+    </label>
+    <br>
+    <label for="remote_work">remote work
+        {{form.remote_work}}
+    </label>
+
+    <br>
+    <hr>
+    {{form.submit(class="btn btn-primary r")}}
+    </form>
+</div>
+</div>
+</div>
+</div>
+
+{% endblock %}

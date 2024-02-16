@@ -1,0 +1,89 @@
+{% extends 'layouts/product_view.html' %}
+
+{% block content %}
+<div class="container preview_product">
+    <div class="row">
+        <div class="col ">
+
+                <h1>Details</h1>
+
+            <div class="row panel">
+                <div class="col-5">
+            <p><strong>Name:</strong> {{ view_product.name }}</p>
+            <p><strong>Brand:</strong> {{ view_product.brand }}</p>
+            <p><strong>Price:</strong> ${{ view_product.price }}</p>
+            <p><strong>Discount:</strong> ${{ view_product.discount_price }}</p>
+
+                </div>
+                <div class="col-7">
+                    <p><strong>In Stock:</strong> {{ view_product.in_stock }}</p>
+                    <p><strong>Category:</strong> {{ view_product.category }}</p>
+                    <p><strong>Color:</strong> {{ view_product.color }}</p>
+                    <p><strong>Features:</strong> {{ view_product.features }}</p>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="row">
+            <div class="col">
+                {% if view_product.main_image %}
+                <img src="{{ url_for('static', filename='uploads/' + view_product.main_image) }}" alt="main_image">
+                {% else %}
+                <!-- Provide a fallback image or message if template.main_image is None -->
+                <img src="{{ url_for('static', filename='uploads/default_image.jpg') }}" alt="main_image">
+                {% endif %}
+            </div>
+            <div class="col">
+                {% if view_product.primary_image %}
+                <img src="{{ url_for('static', filename='uploads/' + view_product.primary_image) }}" alt="primary_image">
+                {% else %}
+                <!-- Provide a fallback image or message if template.primary_image is None -->
+                <img src="{{ url_for('static', filename='uploads/default_image.jpg') }}" alt="primary_image">
+                {% endif %}
+            </div>
+            <div class="col">
+                {% if view_product.secondary_image %}
+                <img src="{{ url_for('static', filename='uploads/' + view_product.secondary_image) }}" alt="secondary_image">
+                {% else %}
+                <!-- Provide a fallback image or message if template.secondary_image is None -->
+                <img src="{{ url_for('static', filename='uploads/default_image.jpg') }}" alt="secondary_image">
+                {% endif %}
+            </div>
+        </div>
+            <br>
+            <div class="row">
+                <div class="col panel2">
+                    
+                    <center><h3><strong>Description:</strong></h3></center>
+                    <p>{{ view_product.description }}</p>
+                   
+
+
+                        
+
+                </div>
+                <div class="col panel2">
+                        <p><strong>listed:</strong> </p>
+                        <p><strong>Availability:</strong> {{ "Available" if view_product.is_available else "Not Available" }}</p>
+                        <p><strong>Weight:</strong> {{ view_product.weight }} kg</p>
+                        <p><strong>Material:</strong> {{ view_product.material }}</p>
+                        
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <form action="/add_product_to_wishlist" method="post">
+                        <input type="hidden" name="product_id" id="product_id" value="{{view_product.id}}">
+                        <button type="submit" class="btn btn-success buy_button">Add To Wish</button>
+                    </form>
+                    <form action="/buy" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="selected_product" id="selected_product" value="{{view_product.id}}">
+                        <button type="submit" class="btn btn-primary buy_button">Buy</button>
+                    </form>
+                        <a href="/enquire" class="btn btn-success buy_button">Enqire</a>
+                </div>
+            </div>
+    </div>
+{% endblock %}

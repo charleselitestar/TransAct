@@ -1,0 +1,86 @@
+{% extends 'layouts/admin.html' %}
+
+{% block content %}
+
+<div class="create_template">
+    <form action="/add_templates", method="post" enctype="multipart/form-data">
+        <center><h2>Enter template details</h2></center>
+        <div class="row">
+            <div class="col-6">
+            <label for="template_group">
+            <select class="form-select form-control" name="template_group" id="template_group" required>
+                <option value="" disabled selected>Select Template Group</option>
+                <option value="cv_templates">CV Template</option>
+                <option value="lease_templates">Lease Template</option>
+                <option value="invoice_templates">Invoice Template</option>
+                <option value="card_templates">Card Template</option>
+                <option value="business_card_templates">Business Cards</option>
+                <option value="flyer_templates">Flyer Template</option>
+                <option value="invitation_templates">Invitation Template</option>
+                <option value="purchase_templates">Purchase Template</option>
+                <option value="poster_templates">Poster Template</option>
+                <option value="rental_templates">Rental Template</option>
+                <option value="service_templates">Service Template</option>
+                <option value="employment_templates">Employment Template</option>
+                <option value="ticket_templates">Ticket Template</option>
+                <option value="wedding_templates">Wedding Template</option>
+            </select>
+        </label>
+            </div>
+            <div class="col-6">
+                <label for="template_type">
+                    <select name="template_type" class="form-select form-control" id="template_type" required>
+                        <option value="" disabled selected>Select Template Type</option>
+                        <option value="basic">Basic</option>
+                        <option value="general">General</option>
+                        <option value="professional">professional</option>
+                        <option value="fancy">fancy</option>
+                        <option value="colourfull">colourfull</option>
+                    </select>
+                </label>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+        <div class="col input">
+        <label for="name">
+            <input class="input" type="text" name="name" id="name" placeholder="template name">
+        </label>
+        <label for="price">
+            <input class="input" type="text" name="price" placeholder="Template_price" >
+        </label>
+        <label for="placeholder">
+            <input class="input" type="text" name="placeholder" id="placeholder" placeholder="description">
+        </label>
+        <center><h2>select display images</h2></center>
+        <label for="main_image">
+            <input class="img" type="file" name="main_image" id="main_image">
+        </label>
+        <label for="primary_image">
+            <input class="img" type="file" name="primary_image" id="primary_image">
+        </label>
+        <label for="secondary_image">
+            <input class="img" type="file" name="secondary_image" id="secondary_image">
+        </label>
+        <br>
+        <div class="flash">
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <div id="flash-message" class="flash">
+                {% for message in messages %}
+                <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% endwith %}
+
+        </div>
+        <button type="submit" class="btn btn-primary low">Done</button>
+        </form>
+            </div>
+            
+        </div>
+
+</div>
+
+{% endblock %}

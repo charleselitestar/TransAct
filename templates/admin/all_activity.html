@@ -1,0 +1,59 @@
+{% extends 'layouts/admin.html' %}
+
+{% block content %}
+
+<style>
+    .container{
+        display: grid;
+        grid-template-columns:1fr 1fr;
+        gap: 10px;
+    }
+
+    .box{
+        border: 1px solid black;
+        background-color: lightblue;
+        font-size: 18px;
+        text-decoration: none;
+        text-align: left;
+        padding:10px ;
+        height: 30vh;
+        border-radius: 10px;
+        width: 100%;
+    }
+
+    @media screen and (max-width: 768px) {
+    .container{
+        margin-top: 50px;
+        width: 94vw;
+    }
+
+}
+</style>
+<center>
+<div class="container" id="mobile-content">
+
+<a href="/" class="box">
+Jobs
+</a>
+
+<a href="/" class="box">
+Services
+</a>
+
+<a href="/" class="box">
+Documents
+</a>
+
+<a href="/" class="box">
+Markets
+</a>
+
+<a href="/" class="box">
+Accounts
+</a>
+
+</div>
+</center>
+<script src="/static/heartbeat/display.js"></script>
+
+{% endblock %}

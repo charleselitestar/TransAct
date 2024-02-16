@@ -1,0 +1,47 @@
+{% extends  'layouts/admin.html' %}
+
+{% block content %}
+
+<style>
+    .container{
+        border: 1px solid black;
+        padding: 10px;
+        width: 60vw;
+    }
+    .container label{
+        position: relative;
+        right: 27%;
+        align-self: last baseline !important;
+        font-size: 25px;
+        color: red;
+    }
+    .container .form-control{
+        width: 70%;
+    }
+</style>
+
+<div class="container">
+    <center>
+        <h2>Account Fees</h2>
+        <form method="post" action="{{ url_for('app_account_fees') }}">
+            {{ form.csrf_token }}
+            <br>
+            <label for="deposit fees">Deposit Fees</label>
+            {{form.deposits(class="form-control") }}
+            <br>
+            <label for="withdrawal fees">Withdrawal Fees</label>
+            {{form.withdrawals(class="form-control")}}
+            <br>
+            <label for="paycode fees">PayCode Fees</label>
+            {{form.paycodes(class="form-control")}}
+            <br>
+            <label for="Payment fees">Payment Fees</label>
+            {{form.payments(class="form-control")}}
+            <br>
+            {{form.submit(class="btn btn-primary")}}
+        </form>
+    </center>
+</div>
+
+
+{% endblock %}

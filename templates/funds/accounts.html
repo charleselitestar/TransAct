@@ -1,0 +1,74 @@
+{% extends 'layouts/accounts.html' %}
+
+{% block content %}
+
+<style>
+    h5{
+        text-align: left;
+    }
+
+</style>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <center>
+                <h1>{{page_name|title}}</h1>
+            </center>
+            <h5>Acc Name: {{ account.account_name }}</h5>
+            <h5>Acc Type: {{ account.account_type }}</h5>
+            <h5>Acc Number: {{ account.account_number }}</h5>
+            <h5>State : {{account.account_status|upper}}</h5>
+            <div class="row">
+                <div class="col-6"><h5>Account Balance:</h5></div>
+                <div class="col-6 {{ balance }}" id="accountBalance"><h5>{{ account_balance }}</h5></div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <center>
+                <h1>Recent's</h1>
+            </center>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Sender</th>
+                            <th>Recipient</th>
+                            <th>Amount</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if transactions %}
+                        {% for transaction in transactions %}
+                        <tr>
+                            <td>{{ transaction.sender_name }}</td>
+                            <td>{{ transaction.recipient_name }}</td>
+                            <td>{{ transaction.currency_symbol }} {{ transaction.transaction_amount }}</td>
+                            <td>
+                                <form method="POST" action="/view_transaction">
+                                    <input type="hidden" name="view_transaction" value="{{ transaction.id }}">
+                                    <button type="submit" class="btn btn-success">View</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                        <tr>
+                            <td colspan="7">
+                                <center>
+                                    <h3>You have no transactions</h3>
+                                </center>
+                            </td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/static/heartbeat/heartbeat.js"></script>
+<script src="/static/socket.io-client/dist/socket.io.js"></script>
+<script src="/static/heartbeat/live_balance.js"></script>
+{% endblock %}

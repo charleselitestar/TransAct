@@ -1,0 +1,75 @@
+{% extends 'layouts/app_services.html' %}
+
+{% block content %}
+<div class="template_area">
+    {% for job in jobs %}
+    <div class="template_box">
+        <div class="row">
+            <div class="col-12">
+                <strong class="seller_name">Organization : {{ job.company_name }}</strong>
+                <form action="/view_job" method="post" enctype="multipart/form-data">
+                    <br>
+                    <div class="row">
+                        <div class="col-4"> <!-- Make each image column one-third width (3 columns in total) -->
+                            {% if job.company_logo %}
+                            <img src="{{ url_for('static', filename='uploads/' + job.company_logo) }}"
+                                alt="Company Logo">
+                            {% else %}
+                            <!-- Provide a fallback image using the user's profile picture -->
+                            <img src="{{ url_for('static', filename='uploads/' + current_user.main_image) }}"
+                                alt="User Profile Picture">
+                            {% endif %}
+                        </div>
+                        <div class="col-8"> <!-- Make the left column half-width -->
+                            <ol style="list-style-type: none;">
+                                <li> <strong class="name">Position : {{ job.position|title }}</strong></li>
+                                <li> <strong>Type :</strong> {{ job.employment_type|title }}</li>
+                                <li><strong>location : {{ job.job_location|title }}</strong></li>
+                                <li><strong class="name">deadline : {{job.application_deadline}}</strong></li>
+                                <li><strong>Working Hours</strong> {{ job.hours }}</li>
+                                <li><strong>Avg Salary : </strong>{{job.basic_salary}}</li>
+                            </ol>
+                        </div>
+                    </div>
+                
+            </div>
+        </div>
+        <div class="row">
+            <input type="hidden" name="job_id" id="job_id" value="{{ job.id }}">
+            <div class="col-12"> <!-- Make the right column half-width -->
+                <ol style="list-style-type: none;">
+                    <li>Requirements : {{job.job_requirements|title}}</li>
+                    <li> <strong class="name">experience : {{job.experience_level|title }}</strong></li>
+                    <li>benefits : {{job.benefits|title}}</li>
+                </ol>
+            </div>
+        </div>
+        <br>
+        <center>
+            <div class="row">
+                <div class="col-4">
+                    <button type="submit" class="btn btn-primary">View</button>
+                </div>
+                </form>
+                <div class="col">
+                    <form action="/apply_job" method="post">
+                        <input type="hidden" name="applied_job" id="applied_job" value="{{ job.id }}">
+                        <button type="submit" class="btn btn-primary">Apply</button>
+                    </form>
+                </div>
+                <div class="col-4">
+                    <form method="POST" action="/contact">
+                        <input type="hidden" name="contact_id" value="{{ job.user_name }}">
+                        <button type="submit" class="btn btn-success">Contact</button>
+                    </form>
+                </div>
+            </div>
+        </center>
+    </div>
+    {% endfor %}
+</div>
+<script src="/static/custom/js/script.js"></script>
+<script src="/static/socket.io-client/dist/socket.io.js"></script>
+<script src="/static/heartbeat/live_jobs.js"></script>
+<script src="/static/custom/js/script.js"></script>
+{% endblock %}

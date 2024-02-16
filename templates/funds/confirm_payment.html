@@ -1,0 +1,25 @@
+{% extends 'layouts/recharge.html' %}
+
+{% block content %}
+<div class="container">
+    <center>
+        <h1>Confirm Payment</h1>
+    </center>
+
+    <center>
+        <h2>Amount : {{transaction_amount}}</h2>
+        <h2>recipient : {{recipient_name}}</h2>
+
+        <h2>Pin</h2>
+        <form action="{{url_for('confirm_payment')}}" method="post">
+            {{form.csrf_token}}
+            <label for="account_pin">
+                {{form.account_pin(class="form-control")}}
+            </label>
+            <br>
+            {{form.submit(class="btn btn-primary")}}
+        </form>
+    </center>
+</div>
+<script src="/static/heartbeat/heartbeat.js"></script>
+{% endblock %}

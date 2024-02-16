@@ -1,0 +1,46 @@
+{% extends 'layouts/accounts.html' %}
+
+{% block content %}
+
+<style>
+    .row{
+        min-width: 35vw;
+        text-align: left;
+        
+    }
+    .container{
+        margin-top: 80px;
+    }
+    .form-control{
+        width: 80vw;
+    }
+    @media screen and (max-width: 768px) {
+    .container{
+        margin-top: 50px;
+    }
+}
+
+
+</style>
+
+<div class="container">
+    <center><h1>Create Token</h1></center>
+        <div class="row">
+            <div class="col-4"><h4>Acc Bal :</h4></div>
+            <div class="col-8 {{balance}} "><h4>{{account_balance}}</h4></div>
+        </div>
+
+    <center>
+        <form action="{{ url_for('recharge_tokens')}}" method="post">
+            {{form.csrf_token}}
+        <br>
+        <label for="token_value">
+            {{ form.value (class="form-control")}}
+        </label>
+        <br>
+        {{form.submit(class="btn btn-primary")}}
+        </form>
+    </center>
+</div>
+
+{% endblock %}

@@ -1,0 +1,87 @@
+{% extends 'layouts/job_view.html' %}
+
+{% block content %}
+
+<style>
+    @media (max-width: 768px){
+        .mobile{
+            text-align: left;
+        }
+        .not-applied{
+            background-color: red;
+            border-radius: 10px;
+            color: white;
+            width: 30vw;
+            margin-left: 21px;
+
+        }
+        .not-applied-number{
+            display: none;
+        }
+        .btn-success{
+            width: 45vw;
+        }
+    }
+</style>
+
+<div class="container view_job">
+    <div class="row">
+        <div class="col">
+            <h2>{{view_job.company_name|capitalize}}</h2>
+            {% if view_job.company_logo %}
+            <img src="{{ url_for('static', filename='uploads/' + view_job.company_logo) }}" alt="Company Logo">
+            {% else %}
+            <!-- Provide a fallback image using the user's profile picture -->
+            <img src="{{ url_for('static', filename='uploads/' + current_user.main_image) }}" alt="User Profile Picture">
+            {% endif %}
+        </div>
+        <div class="col mobile">
+            <ol style="list-style-type: none;">
+                <li><strong class="small_text">Position: {{ view_job.position }}</strong></li>
+                <li>Website <a href="https://{{view_job.company_website}}">{{view_job.company_website}}</a></li>
+                <li>Email : {{view_job.application_email}}</li>
+                <li>Contact  : {{view_job.contact_details}}</li>
+                <li>Working hours : {{view_job.hours}}</li>
+                <li>Location : {{view_job.job_location}}</li>
+                <li>Benefits : {{view_job.benefits}}</li>
+                <li>Experience : {{view_job.experience_level}}</li>
+                <li>Description : {{view_job.description}}</li>
+                <li>Listed : {{view_job.job_date}} at {{view_job.job_time.hour}}:{{view_job.job_time.minute}}:{{view_job.job_time.second}} </li>
+                <li> <strong class="name">application deadline : {{ view_job.application_deadline }}</strong></li>
+
+            </ol>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <div class="{{job_status}}" id="application_status">
+                {{status}}
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="{{job_status_number}}">
+                {{application_number}}
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col">
+            <form action="/add_job_to_wishlist" method="post">
+                <input type="hidden" name="job_id" id="job_id" value="{{view_job.id}}">
+                <button type="submit" class="btn btn-success">Add To Wishlist</button>
+            </form>
+        </div>
+        <div class="col">
+        <form action="/apply_job" method="post">
+            <input type="hidden" name="application_position" id="application_position" value="{{ view_job.position }}">
+            <input type="hidden" name="company_name" id="company_name" value="{{view_job.company_name}}">
+            <input type="hidden" name="applied_job" id="applied_job" value="{{ view_job.id }}">
+            <button type="submit" class="btn btn-success">Apply</button>
+        </form>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

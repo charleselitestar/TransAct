@@ -1,0 +1,45 @@
+{% extends 'layouts/plaque.html' %}
+
+{% block content %}
+
+<style>
+    .container{
+        margin-top: 10px;
+        margin-bottom: 5px;
+    }
+    .main{
+        margin-top: 0px;
+    }
+    .box{
+        text-align: left;
+    }
+    .a{
+        border-radius: 10px !important;
+    }
+</style>
+
+<div class="container">
+    <div class="row">
+        <div class="col"><a href="/">BG</a></div>
+        <div class="col"><a href="/">TEXT</a></div>
+        <div class="col"><a href="/">COLOR</a></div>
+        <div class="col"><a href="/">IMG</a></div>
+        <div class="col"><a href="/">LOGO</a></div>
+    </div>
+</div>
+<div class="container main">
+    <div class="box">
+        <center>
+            <h1>TransAct Digital</h1>
+        </center>
+        
+        <h1>Acc Name : {{account_name}}</h1>
+        <h1>Acc Num : {{account_number}}</h1>
+
+        <center>
+            <a class="btn btn-primary" href="">Done</a>
+        </center>
+    </div>
+</div>
+
+{% endblock %}

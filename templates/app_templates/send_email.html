@@ -1,0 +1,41 @@
+{% extends 'layouts/page2.html' %}
+
+{% block content %}
+<div class="container bg">
+    <form action="/send_email" method="post" enctype="multipart/form-data">
+    <div class="row">
+        <div class="col">
+            <label for="Email Reciver">
+                <input type="email" name="recipent_email" class="form-control" placeholder="recipent email">
+            </label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <label for="sbuject">
+                <input type="text" class="form-control" name="subject" id="submit" placeholder="sbuject">
+            </label>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <label for="document">
+                <input type="file" name="attacchment" class="form-control">
+            </label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <label for="body">
+                <textarea class="form-control" name="body" id="body" cols="60" rows="4"></textarea>
+            </label>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Send</button>
+    </form>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,100 @@
+{% extends 'layouts/markets.html' %}
+
+{% block content %}
+
+<style>
+    @media screen and (max-width: 768px){
+        .btn-primary{
+            padding: 0px;
+        }
+    }
+</style>
+
+<div class="template_area">
+    {% for product in products %}
+    <div class="template_box">
+    <div class="row">
+        <div class="col-12">
+            <strong class="seller_name">Seller : {{ product.seller }} {{last_name}}</strong>
+            <form action="/view_product" method="post" enctype="multipart/form-data">
+                    <br>
+                    <div class="row">
+                        <div class="col-12"> <!-- Make the left column half-width -->
+                            <ol style="list-style-type: none;">
+                                <li> <strong class="name">Product Name :  {{ product.name }}</strong></li>
+                                <li><strong>Price</strong> : {{ product.price }}</li>
+                                <li><strong class="name">Category : {{ product.category }}</strong></li>
+                                <li><strong class="name">Brand : {{product.brand}}</strong></li>
+                                <li>listed : {{product.date_listed}} at {{product.time_listed.hour}}:{{product.time_listed.minute}}:{{product.time_listed.second}}</li>
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <input type="hidden" name="product_id" id="product" value="{{ product.id }}">
+                        <div class="col-12"> <!-- Make the right column half-width -->
+                            <ol style="list-style-type: none;">
+                                
+                                <li>{{product.billing_city|title}} - {{product.billing_state|title}} </li>
+                                
+                            </ol>
+                        </div>
+                    </div>
+                   
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4"> <!-- Make each image column one-third width (3 columns in total) -->
+                    {% if product.main_image %}
+                    <img src="{{ url_for('static', filename='uploads/' + product.main_image) }}" alt="img1">
+                    {% else %}
+                    <!-- Provide a fallback image or message if template.main_image is None -->
+                    <img src="{{ url_for('static', filename='uploads/default_image.jpg') }}" alt="img1">
+                    {% endif %}
+                </div>
+                <div class="col-4">
+                    {% if product.primary_image %}
+                    <img src="{{ url_for('static', filename='uploads/' + product.primary_image) }}" alt="img2">
+                    {% else %}
+                    <!-- Provide a fallback image or message if template.primary_image is None -->
+                    <img src="{{ url_for('static', filename='uploads/default_image.jpg') }}" alt="img2">
+                    {% endif %}
+                </div>
+                <div class="col-4">
+                    {% if product.secondary_image %}
+                    <img src="{{ url_for('static', filename='uploads/' + product.secondary_image) }}"
+                    alt="secondary_image">
+                    {% else %}
+                    <!-- Provide a fallback image or message if template.secondary_image is None -->
+                    <img src="{{ url_for('static', filename='uploads/default_image.jpg') }}" alt="img3">
+                    {% endif %}
+                </div>
+            </div>
+            <br>
+            <center>
+            <div class="row">
+                <div class="col-4">
+                <button type="submit" class="btn btn-primary">View</button>
+                    </form>
+                </div>
+                <div class="col">
+                    <form action="/review" method="post">
+                        <input type="hidden" name="product" id="product" value="{{ product.id }}">
+                        <button type="submit" class="btn btn-primary">Reviews</button>
+                    </form>
+                </div>
+                <div class="col-4">
+                    <form method="POST" action="/contact">
+                        <input type="hidden" name="contact_id" value="{{ product.user_name }}">
+                        <button type="submit" class="btn btn-success">Contact</button>
+                    </form>
+                </div>
+            </div>
+            </center>
+
+        
+        </div>
+        {% endfor %}
+    </div>
+    <script src="/static/socket.io-client/dist/socket.io.js"></script>
+    <script src="/static/heartbeat/live_markets.js"></script>
+{% endblock %}

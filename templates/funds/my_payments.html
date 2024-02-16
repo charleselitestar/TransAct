@@ -1,0 +1,53 @@
+{% extends 'layouts/statements.html' %}
+
+{% block content %}
+<link rel="stylesheet" href="/static/custom/css/tables.css">
+
+<div class="container">
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Recipient</th>
+                    <th>Amount</th>
+                    <th>Date</th>
+                    <th class="action">Action</th>
+                    <th class="action">Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if payments %}
+                {% for payment in payments %}
+                <tr>
+                    <td>{{ payment.account_name }}</td>
+                    <td class="{{ balance }}">{{ payment.currency_symbol }} {{ payment.payment_amount }}</td>
+                    <td>{{ payment.payment_date }}</td>
+                    <td>
+                        <form method="POST" action="/view_payment">
+                            <input type="hidden" name="view_payment" value="{{ payment.id }}">
+                            <button type="submit" class="btn btn-success">View</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form method="POST" action="{{ url_for('reverse_payment', payment_id=payment.id) }}">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <button type="submit" id="delete" class="btn btn-primary">Reverse</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr>
+                    <td colspan="8">
+                        <center>
+                            <h3>You have no transactions</h3>
+                        </center>
+                    </td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+<script src="/static/heartbeat/heartbeat.js"></script>
+{% endblock %}

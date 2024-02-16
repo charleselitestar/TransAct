@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MessageBox</title>
+    <link rel="stylesheet" href="/static/bootsrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/custom/css/style.css">
+<style>
+    @media (max-width: 768px){
+        .message{
+            padding: 0px;
+            text-align: left;
+        }
+    }
+</style>
+
+</head>
+<body>
+    <div class="header">
+        <div class="row">
+            <div class="col-9">
+                <label for="logo" class="logo">{{page_name}}</label>
+            </div>
+            <div class="col">
+                <a  class="btn btn-danger" href="/menu">Exit</a>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Message</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for message in messages %}
+                    <tr>
+                        <td>{{message.sender}}</td>
+                        <td class="message">{{message.short_text}}</td>
+                        <td>
+                            <form action="/messages" method="post">
+                                <input type="hidden" name="message_id" id="" value="{{message.id}}">
+                                <button type="submit" class="btn btn-primary">Open</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+    </div>
+</body>
+</html>

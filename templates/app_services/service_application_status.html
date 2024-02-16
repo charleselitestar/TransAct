@@ -1,0 +1,25 @@
+{% extends 'layouts/service_view.html' %}
+
+{% block content %}
+
+<div class="container view_service">
+    <div class="row">
+        <div class="col">
+            {% if view_service.company_logo %}
+            <img src="{{ url_for('static', filename='uploads/' + view_service.company_logo) }}" alt="Company Logo">
+            {% else %}
+            <!-- Provide a fallback image using the user's profile picture -->
+            <img src="{{ url_for('static', filename='uploads/' + current_user.main_image) }}" alt="User Profile Picture">
+            {% endif %}
+        </div>
+        <div class="col mobile_text_left">
+            <ol style="list-style-type: none;">
+                <li> <strong class="name">Name : {{ application_status.status }}</strong></li>
+                <li><strong class="small_text"></strong></li>
+                <li><strong class="name">Brand :</strong></li>
+            </ol>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

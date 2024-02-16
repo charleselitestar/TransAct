@@ -1,0 +1,35 @@
+{% extends 'layouts/accounts.html' %}
+
+{% block content %}
+
+<style>
+    .container{
+        margin-top: 80px;
+    }
+    @media screen and (max-width: 768px) {
+    .container{
+        margin-top: 50px;
+    }
+}
+</style>
+
+<div class="container">
+    <center><h1>Recharge Account</h1></center>
+
+    <center>
+        <form action="{{url_for('recharge')}}" method="post">
+            {{form.csrf_token}}
+            <label for="recharge_token">
+                {{form.token(class="form-control")}}
+            </label>
+            <br>
+            {{form.submit(class="btn btn-primary")}}
+
+            <br>
+            <br>
+            <p>Enter Recharge Code To Load Account</p>
+        </form>
+    </center>
+</div>
+
+{% endblock %}

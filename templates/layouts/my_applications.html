@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+    <link rel="stylesheet" href="/static/bootsrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/custom/css/style.css"> <!-- Link to the external CSS file -->
+</head>
+
+<body>
+    <div class="header">
+        <label for="logo" class="logo"> {{ page_name }} </label>
+        <ul>
+            <li><a href="/my_job_applications">Job Applications</a></li>
+            <li><a href="/my_service_applications">Service Applications</a></li>
+            <li><a class="btn btn-danger" href="/profile">Exit</a></li>
+        </ul>
+    </div>
+    <div class="container-fluid">
+        <!-- Your content here -->
+        {% block content %}{% endblock %}
+    </div>
+    <br>
+        <footer >
+                            <div class="p">
+                                {% with messages = get_flashed_messages() %}
+                                {% if messages %}
+                                <div id="flash-message" class="flash">
+                                    {% for message in messages %}
+                                    <p>{{ message }}</p>
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                                {% endwith %}
+                            
+                            </div>
+        </footer>
+    <script src="/static/custom/js/script.js"></script> <!-- Link to the external JavaScript file -->
+    <script src="/static/bootsrap/js/bootstrap.min.js"></script>
+</body>
+
+</html>

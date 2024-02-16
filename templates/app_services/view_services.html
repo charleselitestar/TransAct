@@ -1,0 +1,77 @@
+{% extends 'layouts/app_services.html' %}
+
+{% block content %}
+<div class="template_area">
+    {% for service in services %}
+    <div class="template_box">
+        <div class="row">
+    <div class="col-12">
+        <strong class="seller_name">Organization: {{ service.company_name }}</strong>
+        <form action="{{url_for('view_service') }}" method="post" enctype="multipart/form-data">
+            <br>
+            <div class="row">
+                    <div class="col-4"> <!-- Make each image column one-third width (3 columns in total) -->
+                        {% if service.company_logo %}
+                        <img src="{{ url_for('static', filename='uploads/' + service.company_logo) }}" alt="Company Logo">
+                        {% else %}
+                        <!-- Provide a fallback image using the user's profile picture -->
+                        <img src="{{ url_for('static', filename='uploads/' + current_user.main_image) }}" alt="User Profile Picture">
+                        {% endif %}
+                    </div>
+
+                <div class="col-8"> <!-- Make the left column half-width -->
+                    <ol style="list-style-type: none;">
+                        <li> <strong class="name">Type : {{ service.service_type }}</strong></li>
+                        <li><strong class="name">Position : {{ service.position }}</strong></li>
+                        <li> <strong>Location</strong> : {{service.service_location|title}}</li>
+                        <li><strong>Price</strong> : {{ service.basic }}</li>
+                    </ol>
+                </div>
+
+            </div>
+
+            </div>
+        </div>
+        <div class="row">
+                <div class="col-12"> <!-- Make the right column half-width -->
+                    <input type="hidden" name="service_id" id="service_id" value="{{ service.id }}">
+                    <ol style="list-style-type: none;">
+                        
+                        
+                        <li> <strong>Requirememts</strong> : {{ service.service_requirements|title }}</li>
+                        <hr>
+                        <li><strong>Duties</strong> : {{service.responsibilities|capitalize}}</li>
+                    </ol>
+                </div>
+        </div>
+        <br>
+        <center>
+            <div class="row">
+                <div class="col-4">
+                    <button type="submit" class="btn btn-primary">View</button>
+                    </form>
+                </div>
+                <div class="col">
+                    <form action="{{url_for('apply_services')}}" method="post">
+                        <input type="hidden" name="application_position" id="application_position" value="{{ service.position }}">
+                        <input type="hidden" name="company_name" id="company_name" value="{{service.company_name}}">
+                        <input type="hidden" name="applied_service" id="applied_service" value="{{ service.id }}">
+                        <button type="submit" class="btn btn-primary">Apply</button>
+                    </form>
+                </div>
+                <div class="col-4">
+                    <form method="POST" action="/contact">
+                        <input type="hidden" name="contact_id" value="{{ service.user_name }}">
+                        <button type="submit" class="btn btn-success">Contact</button>
+                    </form>
+                </div>
+            </div>
+        </center>
+
+
+    </div>
+    {% endfor %}
+</div>
+<script src="/static/socket.io-client/dist/socket.io.js"></script>
+<script src="/static/heartbeat/live_services.js"></script>
+{% endblock %}

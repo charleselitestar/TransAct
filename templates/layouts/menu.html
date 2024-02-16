@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elite_Doc's</title>
+    <link rel="stylesheet" href="/static/bootsrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/bootsrap/css/style.css">
+    <style>
+        @media (max-width: 768px){
+            .btn-danger{
+                padding: 0px !important;
+                min-width: 15vw;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <label for="logo" class="logo">{{ page_name }}</label>
+        <ul>
+            {% if page_name == 'documents' %}
+            <li><a class="btn btn-danger" href="/menu">Back</a></li>
+            {% elif page_name == 'menu' %}
+            <a href="/menu" class="btn btn-danger">Exit</a>
+            {% else %}
+           <li><a href="/logout" class="btn btn-danger">Log Out</a></li>
+           {% endif %}
+        </ul>
+    </div>
+
+
+    <div class="container-fluid">
+        <!-- Your content here -->
+
+        {% block content %}{% endblock %}
+    </div>
+
+    <script src="/static/custom/js/script.js"></script> <!-- Link to the external JavaScript file -->
+    <script src="/static/bootsrap/js/bootstrap.min.js"></script>
+</body>
+
+</html>

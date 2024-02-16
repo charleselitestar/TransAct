@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elite_Doc's</title>
+    <link rel="stylesheet" href="/static/bootsrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/bootsrap/css/login_css.css">
+    <link rel="manifest" href="/static/manifest.json">
+</head>
+
+<body>
+
+    <div class="header">
+        <label for="logo" class="logo">{{ page_name }}</label>
+        <a href="/help" class="list">help</a>
+        <a href="/about" class="list">about</a>
+    </div>
+
+
+    <div class="container-fluid">
+        <!-- Your content here -->
+
+        {% block content %}{% endblock %}
+    </div>
+<script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/static/service-worker.js')
+            .then((registration) => {
+                console.log('Service Worker registered with scope:', registration.scope);
+            })
+            .catch((error) => {
+                console.error('Service Worker registration failed:', error);
+            });
+
+        navigator.serviceWorker.addEventListener('message', (event) => {
+            if (event.data.connectionEstablished) {
+                // Connection is established, hide the splash screen
+                const splashScreen = document.getElementById('splash-screen');
+                if (splashScreen) {
+                    splashScreen.style.display = 'none';
+                }
+
+                // Send a message to the service worker to hide the splash screen
+                navigator.serviceWorker.controller.postMessage({ action: 'hideSplashScreen' });
+            }
+        });
+    }
+</script>
+
+    <script src="/static/custom/js/script.js"></script> <!-- Link to the external JavaScript file -->
+    <script src="/static/bootsrap/js/bootstrap.min.js"></script>
+</body>
+
+</html>

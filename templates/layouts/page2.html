@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elite_Doc's</title>
+    <link rel="stylesheet" href="/static/bootsrap/css/bootstrap.min.css">
+    <style>
+        label.logo {
+            color: white;
+            text-transform: capitalize;
+            font-size: 35px;
+            line-height: 60px;
+            padding: 0 15px;
+            font-weight: bold;
+        }
+
+        footer {
+            background-color: #dbd1d1;
+            color: #060202;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            z-index: 100;
+            transition-duration: 0.5s;
+        }
+
+        footer:hover {
+            background-color: rgb(183, 183, 222);
+        }
+
+        .header {
+            background-color: blue;
+            height: 60px;
+            z-index: 100;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+        }
+
+        ul {
+            float: right;
+            margin-top: 10px;
+            margin-right: 20px;
+        }
+
+        ul li {
+            display: inline-block;
+            line-height: 30px;
+            margin: 0 5px;
+        }
+
+        .container {
+            margin-top: 70px;
+            padding: 20px;
+            border: 1px solid black;
+            text-align: center;
+        }
+
+        input {
+            margin-bottom: 30px;
+            width: 50vw !important;
+        }
+
+        select {
+            margin-bottom: 10px;
+        }
+
+        .bg {
+            background-color: lightskyblue;
+            border-top-right-radius: 10px;
+            border-top-left-radius: 10px;
+        }
+
+        .bg input {
+            border: 1px solid black;
+        }
+
+        .bg input:hover {
+            box-shadow: 5px 5px 5px 5px black;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <label for="logo" class="logo">{{ page_name }}</label>
+        <ul>
+
+            <li><a href="/menu" class="btn btn-danger">Exit</a>
+            </li>
+        </ul>
+    </div>
+
+
+    <div class="container-fluid">
+        <!-- Your content here -->
+
+        {% block content %}{% endblock %}
+    </div>
+
+    <script src="/static/custom/js/script.js"></script> <!-- Link to the external JavaScript file -->
+    <script src="/static/bootsrap/js/bootstrap.min.js"></script>
+</body>
+
+</html>

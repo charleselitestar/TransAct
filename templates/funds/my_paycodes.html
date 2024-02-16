@@ -1,0 +1,81 @@
+{% extends  'layouts/statements.html' %}
+
+{% block content %}
+
+<style>
+    .action{
+        width: 100px;
+    }
+    .container{
+        margin-top: 80px;
+    }
+    .btn-primary{
+        padding: 0px;
+    }
+    .btn-success{
+        padding: 0px;
+    }
+        @media screen and (max-width: 768px) {
+    .mobile{
+        display: none;
+    }
+
+}
+</style>
+
+<div class="container">
+    <div class="row">
+        <div class="col">Valid {{ valid_codes }}</div>
+        <div class="col">Used {{used_codes }}</div>
+        <div class="col">Total Tokens {{total_codes}}</div>
+    </div>
+</div>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Amount</th>
+            <th>Time</th>
+            <th>status</th>
+            <th class="action">Action</th>
+            <th class="action mobile">Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if tokens %}
+        {% for token in tokens %}
+        <tr >
+            <td class="{{balance}}" >{{ token.currency_symbol}} {{ token.value }}</td>
+            <td>{{token.created_time.hour}}:{{token.created_time.minute}}:{{token.created_time.second}}</td>
+            <td>{{ token.status|capitalize }}</td>
+            <td >
+                <form method="POST" action="/view_paycode">
+                    <input type="hidden" name="view_paycode" value="{{ token.id }}">
+                    <button type="submit" class="btn btn-success ">View</button>
+                </form>
+            </td>
+            <td class="mobile">
+                <form method="POST" action="{{ url_for('delete_token', token_id=token.id) }}">
+                    <input type="hidden" name="_method" value="DELETE">
+                    {% if token.status == 'Valid' %}
+                    <button type="submit" id="delete" class="btn btn-primary">Reverse</button>
+                    {% else %}
+                    <button type="submit" class="btn btn-danger ">Delete</button>
+                    {% endif %}
+                </form>
+            </td>
+
+        </tr>
+        {% endfor %}
+        {% else %}
+        <tr>
+            <td colspan="8">
+                <center>
+                    <h3>You have no transactions</h3>
+                </center>
+            </td>
+        </tr>
+        {% endif %}
+    </tbody>
+            </table>
+<script src="/static/heartbeat/heartbeat.js"></script>
+{% endblock %}

@@ -1,0 +1,69 @@
+{% extends 'layouts/service_view.html' %}
+
+{% block content %}
+
+<style>
+    @media (max-width: 768px){
+        .mobile{
+            text-align: left;
+        }
+        .btn-success{
+            width: 45vw;
+        }
+    }
+</style>
+
+<div class="container view_service">
+    <div class="row">
+        <div class="col">
+            <h2>{{view_service.company_name|capitalize}}</h2>
+            {% if view_service.company_logo %}
+            <img src="{{ url_for('static', filename='uploads/' + view_service.company_logo) }}" alt="Company Logo">
+            {% else %}
+            <!-- Provide a fallback image using the user's profile picture -->
+            <img src="{{ url_for('static', filename='uploads/' + current_user.main_image) }}" alt="User Profile Picture">
+            {% endif %}
+        </div>
+        <div class="col mobile">
+            <ol style="list-style-type: none;">
+                <li>Service Type : {{ view_service.service_type }}</li>
+                <li>Price : {{view_service.basic}}</li>
+                <li>Category : {{ view_service.position }}</li>
+                <li>Location : {{view_service.service_location}}</li>
+                <li>Contact : {{view_service.contact_details}}</li>
+                <li>Working hours : {{ view_service.hours }}</li>
+                <li>Application Deadline : {{ view_service.application_deadline }}</li>
+                <li>Experience : {{view_service.experience_level}}</li>
+                <li>Listed : {{view_service.service_date}} at {{view_service.service_time.hour}}:{{view_service.service_time.minute}}:{{view_service.service_time.second}}</li>
+            </ol>
+        </div>
+        
+    </div>
+    <div class="row">
+        <div class="col mobile">
+                    <ol style="list-style-type: none;">
+                        <label for="description">Description
+                            <p>{{ view_service.description }}</p>
+                        </label>
+                    </ol>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+                    <form action="/add_service_to_wishlist" method="post">
+                        <input type="hidden" name="service_id" id="service_id" value="{{view_service.id}}">
+                        <button type="submit" class="btn btn-success">Add To Wishlist</button>
+                    </form>
+                </div>
+        <div class="col">
+            <form action="/apply_service" method="post">
+                <input type="hidden" name="application_position" id="application_position" value="{{ view_service.position }}">
+                <input type="hidden" name="company_name" id="company_name" value="{{view_service.company_name}}">
+                <input type="hidden" name="applied_job" id="applied_services" value="{{ view_service.id }}">
+                <button type="submit" class="btn btn-success">Apply</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
