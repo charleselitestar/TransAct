@@ -419,6 +419,68 @@ def account_charges(fee_type,price,client_account,account_id):
 def menu():
     pass
 
+def get_date(date):
+    now = date
+    year = now.year
+    month = now.month
+    day = now.day
+    date = f"{year}-{month:02d}-{day:02d}"
+    return date
+
+def get_time(time):
+    now = time
+    hour = now.hour
+    minutes = now.minute
+    seconds = now.second
+
+    time = f"{hour:02d}:{minutes:02d}:{seconds:02d}"
+    return time
+
+
+def format_balance(account_balance):
+    acb = str(account_balance)
+    bal = len(acb)
+    print(bal)
+    if bal == int(4):
+        formatted_balance = '{:.2f}'.format(account_balance)
+        formatted_amount = formatted_balance[:1] + ' ' + formatted_balance[1:]
+        account_balance = formatted_amount
+        return account_balance
+    elif bal == int(5):
+        formatted_balance = '{: .2f}'.format(account_balance)
+        formatted_amount = formatted_balance[:3] + ' ' + formatted_balance[3:]
+        account_balance = formatted_amount
+        return account_balance
+    else :
+        formatted_balance = '{:.2f}'.format(account_balance)
+        formatted_amount = formatted_balance[:3] + ' ' + formatted_balance[3:]
+        account_balance = formatted_amount
+        return account_balance
+    # Get the latest transaction
+
+"""
+def format_balance(account_balance):
+    bal = account_balance
+    print(bal)
+    if bal >= int(1000) < int(10000):
+        formatted_balance = '{:.2f}'.format(bal)
+        formatted_amount = formatted_balance[:1] + ' ' + formatted_balance[1:]
+        account_balance = formatted_amount
+        return account_balance
+    elif bal >= int(10000):
+        formatted_balance = '{: .2f}'.format(bal)
+        formatted_amount = formatted_balance[:3] + ' ' + formatted_balance[3:]
+        account_balance = formatted_amount
+        return account_balance
+    else :
+        formatted_balance = '{:.2f}'.format(bal)
+        formatted_amount = formatted_balance[:3] + ' ' + formatted_balance[3:]
+        account_balance = formatted_amount
+        return account_balance
+    # Get the latest transaction
+"""
+        
+
 def user_accounts():
     clue = 'account'
     if request.method == "GET":
@@ -427,16 +489,20 @@ def user_accounts():
         user_id = current_user.id
         account = Accounts.query.get(user_id)
         account_balance = account.account_balance
-        if account_balance >= int(1000):
-            balance = 'green'
-        elif account_balance <= int(1000):
-            balance = 'red'
-        formatted_balance = '{: .2f}'.format(account_balance)
-        formatted_amount = formatted_balance[:3] + ' ' + formatted_balance[3:]
+        bal = account.account_balance
         currency = account.currency_symbol
-        account_balance = f"{currency} {formatted_amount}"
 
-        # Get the latest transaction
+        if bal > 1000:
+            balance = 'green'
+        else:
+            balance = 'red'
+
+        bal = format_balance(account_balance)
+        account_balance = f"{currency} {bal}"
+
+        
+
+
         latest_transaction = (
             Transactions.query.filter(or_(
                     Transactions.user_id == user_id,
@@ -575,25 +641,35 @@ def recharge_account():
             db.session.commit()
 
             user_role = current_user.role
+            cb = format_balance(current_balance)
+            current_balance = f"{currency_symbol} {cb}"
+            tv = format_balance(token_value)
+            token_value = f"{currency_symbol} {tv}"
+            rb = format_balance(account.account_balance)
+            remaining_balance = f'{currency_symbol} {rb}'
+
+            page_name = 'recharge success'
+
             if user_role == 'Agent':
-                return render_template('merchant/recharge_success.html',page_name='recharge success',current_balance=current_balance,token_value=token_value,remaining_balance=account.account_balance)
-            return render_template('funds/recharge_success.html',page_name='recharge success',current_balance=current_balance,token_value=token_value,remaining_balance=account.account_balance)
+                return render_template('merchant/recharge_success.html',page_name=page_name,current_balance=current_balance,token_value=token_value,remaining_balance=remaining_balance)
+            return render_template('funds/recharge_success.html',page_name=page_name,current_balance=current_balance,token_value=token_value,remaining_balance=remaining_balance)
             
 
 def merchant_accounts():
+        page_name = 'App Agent'
         user_id = current_user.id
         account = Accounts.query.get(user_id)
-        balance = account.account_balance
-        balance_amount = balance
-        formatted_balance = '{: .2f}'.format(balance)
-        formatted_amount = formatted_balance[:3] + ' ' + formatted_balance[3:]
+        account_balance = account.account_balance
         currency = account.currency_symbol
-        account_balance = f"{currency} {formatted_amount}"
-        page_name = 'App Agent'
-        if balance_amount > int(1000):
+        bal = account_balance
+
+        if bal > 1000:
             balance = 'green'
-        elif balance_amount < int(1000):
+        else:
             balance = 'red'
+
+        bal = format_balance(account_balance)
+        account_balance = f"{currency} {bal}"
         form = Recharge_Tokens_Form()
         return render_template('merchant/create_token.html',
                                 page_name=page_name,
@@ -655,7 +731,14 @@ def withdraw_user_funds():
             return render_template('funds/confirm_withdrawal.html', page_name=page_name, withdraw_amount=withdraw_amount, form=form)
 
         return withdraw(withdraw_amount)
-    return render_template("funds/withdraw.html", page_name=page_name, account=account, form=form)
+    bal = account_balance
+    if bal > 1000:
+        balance = 'green'
+    else:
+        balance = 'red'
+    account_balance = format_balance(account_balance)
+    account_balance = f"{account.currency_symbol} {account_balance}"
+    return render_template("funds/withdraw.html", page_name=page_name, account=account, form=form, account_balance=account_balance, balance=balance)
 
 def confirm_withdrawal(confirm_pin):
     user_id = current_user.id
@@ -784,12 +867,15 @@ def withdraw(withdraw_amount):
         db.session.commit()
 
         # Pass data to the template
+        wa = format_balance(withdraw_amount)
+        withdraw_amount = f"{currency_symbol} {wa}"
+
+
         return render_template(
             "funds/withdraw_details.html",
             withdraw_code=withdraw_code,
             withdraw_pin=withdraw_pin,
             withdraw_amount=withdraw_amount,
-            currency_symbol=currency_symbol,
             page_name=page_name,
         )    
 
@@ -851,7 +937,7 @@ def pay(recipient_account,transaction_amount,reference):
             creation_date = payment_date,
             creation_time = payment_time,
             recipient_id = recipient.user_id,
-            user_id = recipient.user_id,
+            user_id = current_user.id,
         )
         db.session.add(recipient)
         db.session.commit()

@@ -2,4 +2,14 @@
 
 {% block content %}
 
+<div class="container">
+    <center>
+        <form method="POST" action="{{url_for('redeem_paycode')}}">
+            {{form.csrf_token}}
+            {{form.paycode(class="form-control")}}
+            {{form.submit(class="btn btn-primary")}}
+        </form>
+    </center>
+</div>
+
 {% endblock %}

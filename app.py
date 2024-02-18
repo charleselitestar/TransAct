@@ -22,28 +22,23 @@ from sqlalchemy.ext.declarative import declarative_base
 from datetime import date, datetime
 import random
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import or_
+from sqlalchemy import or_, desc, asc
 from sqlalchemy.sql import func
 import io
 import getpass
 import secrets
 import logging
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
-from email.mime.application import MIMEApplication
 import os
 from flask_limiter import Limiter
-import base64
-from weasyprint import HTML
 from app_forms.user_forms import Login_Form,Registeration_Form, Disable_Account_Form,Update_Profile
 from app_forms import Recharge_Tokens_Form, Instant_PayCode, Recharge_Form,Redeem_Paycode, Pay_Someone, Confirm_Payment, Withdraw_Funds_Form, Confirm_Withdrawal, Load_Account
 from app_forms import App_Account_Fees,Account_limits, Collect_Funds_Form
 
 from app_config.config import Config, logger
 
-from app_modules import country_currency, user_accounts, merchant_accounts, collect_funds, account_notification_message
+from app_modules import country_currency, user_accounts, merchant_accounts, collect_funds, account_notification_message, format_balance, get_date, get_time
 from app_modules import withdraw, withdraw_user_funds, confirm_withdrawal, account_charges
-from app_modules import initialize_root, template_charges, recharge_account
+from app_modules import initialize_root, recharge_account
 from app_modules import paycode_notification_message, withdrawal_notification_message, recharge_notification_message
 from app_modules import new_message_alert, paycode_charges, payment_charges, pay
 
@@ -51,6 +46,7 @@ app = Flask(__name__)
 app.config.from_object(Config)
 bcrypt = Bcrypt(app)
 
+''' 
 hashed_password = os.environ.get("APP_PASSWORD")
 if not hashed_password:
     print("Please set the environment variable 'APP_PASSWORD_HASH' to start the app.")
@@ -61,6 +57,8 @@ if not bcrypt.check_password_hash(hashed_password, entered_password):
     print("Incorrect password. Exiting.")
     exit()
 
+'''
+    
 # Initialize extensions
 login_manager = LoginManager(app)
 from app_models import db
@@ -71,7 +69,7 @@ mail = Mail(app)
 socketio = SocketIO(app)
 Base = declarative_base()
 
-from app_models.user import LastLogin, User, User_FullProfile, Group_Members, Completed_Applications, UserContacts, Message
+from app_models.user import LastLogin, User, User_FullProfile, UserContacts
 from app_models import Accounts,Recipients,Deposits,Withdrawals,Payments,Transactions,Recharge_Tokens,Redeemed_Tokens,Withdraw_Codes,Withdrawn_Funds,Fees,Limits
 
 with app.app_context():
@@ -97,9 +95,8 @@ def get_previous_balance():
 
 @socketio.on('update_balance')
 def amount_update(amount):
-    sid = request.get('sid')
     new_balance = get_current_balance()
-    emit('update_balance', {'amount': new_balance}, room=current_user.id, namespace='sid')
+    emit('update_balance', {'amount': new_balance}, room=current_user.id, namespace='/')
     print('balance has changed')
 
     # Sleep for a short interval before checking again
@@ -115,8 +112,27 @@ def allowed_file(filename):
 # -------------------------------------------app start login, register and profile management-----------------------------------------------#
 @app.route("/", methods=["GET", "POST"])
 def index():
-    page_name = "EliteDocs"
+    page_name = "TransAct"
     return render_template("app_templates/index.html", page_name=page_name)
+
+
+@app.route("/messages", methods=['GET', 'POST'])
+@login_required
+def messages():
+    page_name = 'MessageBox'
+    user_id = current_user.id
+    username = current_user.user_name
+    messages = Message.query.filter(
+        Message.user_id == user_id,
+        Message.recipient_id == user_id,).order_by(
+        Message.datestamp.desc(),
+        Message.timestamp.desc(),
+    ).all()
+    if request.method == 'POST':
+        message_id = int(request.form.get('message_id'))
+        message = Message.query.filter_by(id=message_id).first()
+        return render_template('communication/view_message.html', message=message)
+    return render_template('communication/message_box.html', page_name=page_name,messages=messages)
 
 @app.route("/elitedocs_website", methods=['GET', 'POST'])
 def elite_website():
@@ -189,7 +205,7 @@ def login():
             login_user(user)
             logger.info(f"{user.role} {user_name} logged in at {datetime.now()}")
 
-            return redirect(url_for("menu"))
+            return redirect(url_for("account"))
         else:
             # Incorrect login attempt
             flash("Login failed. Please check your username and password.", "danger")
@@ -743,8 +759,7 @@ def logout():
 @app.route("/menu", methods=["GET", "POST"])
 @login_required
 def menu():
-    user_name = session.get("first_name")
-    page_name = user_name + " @ EliteDocs"
+    page_name =  "TransAct"
     user_role = current_user.role
     if user_role == 'Agent':
         return merchant_accounts()
@@ -919,11 +934,26 @@ def view_transaction():
         view_transaction = request.form.get("view_transaction")
 
         transaction = Transactions.query.filter_by(id=view_transaction).first()
+        if not transaction:
+            flash('transaction does not exist')
+            return redirect(url_for('account'))
+        
+        currency = transaction.currency_symbol
+        amount = format_balance(transaction.transaction_amount)
+        amount = f"{currency} {amount}"
+
+        transaction_date = get_date(transaction.transaction_date)
+        transaction_time = get_time(transaction.transaction_time)
 
     return render_template(
         "funds/view_transaction.html",
         page_name=page_name,
-        transaction=transaction,
+        sender_name = transaction.sender_name,
+        recipient_name = transaction.recipient_name,
+        transaction_type = transaction.transaction_type,
+        transaction_date=transaction_date,
+        transaction_time=transaction_time,
+        amount=amount,
     )
 
 @app.route("/view_payment", methods=["GET", "POST"])
@@ -934,11 +964,25 @@ def view_payment():
         view_payment = request.form.get("view_payment")
 
         payment = Payments.query.filter_by(id=view_payment).first()
+        if not payment:
+            flash('payment does not exist')
+            return redirect(url_for('account'))
+        
+        currency = payment.currency_symbol
+        amount = format_balance(payment.payment_amount)
+        amount = f"{currency} {amount}"
+
+        payment_date = get_date(payment.payment_date)
+        payment_time = get_time(payment.payment_time)
 
     return render_template(
         "funds/view_payment.html",
         page_name=page_name,
-        payment=payment,
+        payment_time=payment_time,
+        payment_date=payment_date,
+        amount=amount,
+        reference = payment.reference,
+        account_name = payment.account_name,
     )
 
 @app.route("/view_paycode", methods=["GET", "POST"])
@@ -963,16 +1007,41 @@ def view_paycode():
                     status='Valid'
         ).count()
 
+    value = format_balance(paycode.value)
+    currency = paycode.currency_symbol
+    value = f"{currency} {value}"
+
+    date = get_date(paycode.created_date)
+    time = get_time(paycode.created_time)
 
     return render_template(
         "funds/view_paycode.html",
         page_name=page_name,
         paycode=paycode,
+        time = time,
+        date = date,
+        reference = current_user.first_name,
+        status = paycode.status,
+        value = value,
         used_codes=used_codes,
         valid_codes=valid_codes,
         total_codes=total_codes,
+        id = paycode.id,
     )
 
+@app.route('/recents', methods=['GET', 'POST'])
+def recents():
+    page_name = 'recents'
+    recipients = Recipients.query.filter_by(user_id=current_user.id).order_by(
+        Recipients.creation_date.desc(),
+        Recipients.creation_time.desc(),
+    ).all()
+    if not recipients:
+        flash('no recipients')
+        return redirect(url_for('payments'))
+    
+    return render_template('funds/recents.html', page_name=page_name, recipients=recipients)
+    
 @app.route("/payments", methods=["GET","POST"])
 @login_required
 def payments():
@@ -982,22 +1051,22 @@ def payments():
         account = Accounts.query.get(user_id)
         account_balance = account.account_balance
         currency_symbol = account.currency_symbol
-        if account_balance < int(1000):
-            balance = 'red'
-        elif account_balance > int(1000):
+        bal = account_balance
+        if bal > 1000:
             balance = 'green'
+        else:
+            balance = 'red'
 
-        recipients = Recipients.query.filter_by(user_id=user_id).order_by(
-            Recipients.creation_date.desc(),
-            Recipients.creation_time.desc(),
-        ).all()
+        account_balance = format_balance(account_balance)
+        account_balance = f"{currency_symbol} {account_balance}"
+
+
         form = Pay_Someone()
         return render_template("funds/payments.html",
                                page_name=page_name,
                                account_balance=account_balance,
                                balance=balance,
                                form=form,
-                               recipients=recipients,
                                currency_symbol=currency_symbol)
     
     form = Pay_Someone()
@@ -1045,6 +1114,7 @@ def pay_again():
             return redirect(url_for('payments'))
         recipient_account = int(request.form.get('recipient_account'))
         recipient_name = request.form.get('recipient_name')
+        reference = current_user.first_name
         date = request.form.get('date')
         time = request.form.get('time')
 
@@ -1058,7 +1128,7 @@ def pay_again():
             flash('transaction does not exist')
             return redirect(url_for('payments'))
         
-        return pay(recipient_account,transaction_amount)
+        return pay(recipient_account,transaction_amount, reference)
 
 
 @app.route("/confirm_payment", methods=['GET','POST'])
@@ -1111,10 +1181,7 @@ def pay_store():
         balance = 'red'
     elif account_balance >= int(1000):
         balance = 'green'
-    formatted_balance = '{: .2f}'.format(account_balance)
-    formatted_amount = formatted_balance[:3] + ' ' + formatted_balance[3:]
-    formated_account_balance = f"{currency_symbol} {formatted_amount}"
-    
+
     form = Instant_PayCode()
     if request.method == 'POST' and form.validate_on_submit():
         if account.account_status == 'disabled':
@@ -1183,19 +1250,23 @@ def pay_store():
             )
             db.session.add(transaction)
             db.session.commit()
+            rb = format_balance(transaction.remaining_balance)
+            remaining_balance = f"{currency_symbol} {rb}"
+            pa = format_balance(pay_amount)
+            pay_amount = f"{currency_symbol} {pa}"
             return render_template('funds/instant_paycode.html', 
                                    page_name=page_name,
                                    pay_code=pay_code,
-                                   remaining_balance=transaction.remaining_balance,
-                                   currency_symbol=currency_symbol,
+                                   remaining_balance=remaining_balance,
                                    pay_amount=pay_amount,
                                    )
+    account_balance = format_balance(account_balance)
     return render_template('funds/create_paycode.html',
                            page_name=page_name,
                            currency_symbol=currency_symbol,
                            balance=balance,
                            form=form,
-                           formated_account_balance=formated_account_balance,
+                           account_balance=account_balance,
                            )
 
 @app.route("/redeem_paycode", methods=['GET','POST'])
@@ -1240,10 +1311,12 @@ def redeem_paycode():
             status = valied_paycode.status,
             redeemed_date = redeemed_date,
             redeemed_time = redeemed_time,
+            user_id = current_user.id,
         )
         db.session.add(redeemed_token)
         db.session.commit()
-        db.session.close()
+        flash(f'token redeemed successfully balance is {account.currency_symbol} {account.account_balance}')
+        return merchant_accounts()
 
     return render_template('merchant/redeem_paycode.html', page_name=page_name, form=form)
 
@@ -1277,9 +1350,13 @@ def load_account():
         transaction_amount = load_amount
         reference = current_user.first_name
 
-        pay(recipient_account,transaction_amount,reference)
+        p = pay(recipient_account,transaction_amount,reference)
+        if p:
+            flash('payment succesfull')
+        else:
+            flash('payment failed')
 
-    return render_template('merchant/load_user_accounts.html', page_name=page_name)
+    return render_template('merchant/load_user_accounts.html', page_name=page_name,form=form)
 
 @app.route("/merchant_history")
 @login_required
@@ -1498,7 +1575,9 @@ def recharge_tokens():
         db.session.commit()
 
         flash("token created successfully")
-        return render_template('merchant/token_details.html',currency_symbol=currency_symbol, token=token, value=value, page_name=page_name)
+        val = format_balance(value)
+        value = f"{currency_symbol} {val}"
+        return render_template('merchant/token_details.html', token=token, value=value, page_name=page_name)
 
     return render_template("merchant/create_token.html", page_name=page_name, form=form)
 

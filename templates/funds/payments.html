@@ -33,6 +33,20 @@
 
     .btn-success {
         width: 100%;
+    
+    
+    }
+    .green{
+        color: green;
+    }
+    .red{
+        color: red;
+    }
+    .bal{
+        text-align: right !important;
+    }
+    label{
+        text-align: left !important;
     }
 
     @media (max-width: 768px) {
@@ -43,24 +57,37 @@
         .form-control{
             width: 85vw !important;
         }
-        label{
+        .form-group label{
             font-size: 25px;
             text-align: left;
         }
         .container{
             margin-top: 50px;
         }
-        .container label{
-            text-align: left;
-        }
     }
 </style>
 
 <div class="container">
 <div class="row">
-<div class="col-12 col-md-5">
     <center>
-        <h1>Pay Account</h1>
+        <div class="row">
+            <div class="col">
+                <h1>Pay Account</h1>
+            </div>
+            <div class="col">
+<div class="col-12 col-md">
+    <center>
+        <div class="row">
+            <div class="col-6 bal">
+                <h5>Acc Balance :</h5>
+            </div>
+            <div class="col-6 col-md-3 {{balance}}">
+                <h5>{{ account_balance }}</h5>
+            </div>
+        </div>
+    </center>
+            </div>
+        </div>
         <form action="{{ url_for('payments') }}" method="post">
             {{ form.csrf_token }}
             <div class="form-group">
@@ -78,68 +105,7 @@
             {{ form.submit(class="btn btn-primary") }}
         </form>
     </center>
-</div>
-<div class="col-12 col-md">
-    <center>
-        <div class="row">
-            <div class="col-6">
-                <h4>Acc Balance :</h4>
-            </div>
-            <div class="col-6 col-md-3 balance">
-                <h4>{{ currency_symbol }} {{ account_balance }}</h4>
-            </div>
-        </div>
-</center>
-<div class="row">
-<div class="col">
-<div class="table-responsive">
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Acc</th>
-                <th>Acc No</th>
-                <th>Amount</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% if recipients %}
-            {% for recipient in recipients %}
-            <tr>
-                <td>{{ recipient.account_name }}</td>
-                <td>{{ recipient.account_number }}</td>
-                <td>{{ recipient.currency_symbol }} {{ recipient.amount }}</td>
-                <td>
-                    <form method="POST" action="/pay_again">
-                        <input type="hidden" name="recipient_account"
-                            value="{{ recipient.account_number }}">
-                        <input type="hidden" name="recipient_name" id=""
-                            value="{{ recipient.account_name }}">
-                        <input type="hidden" name="transaction_amount" id="transaction_amount"
-                            value="{{ recipient.amount }}">
-                        <input type="hidden" name="date" id="date"
-                            value="{{ recipient.creation_date }}">
-                        <input type="hidden" name="time" id="time"
-                            value="{{ recipient.creation_time }}">
-                        <button type="submit" class="btn btn-success">Pay Again</button>
-                    </form>
-                </td>
-            </tr>
-            {% endfor %}
-            {% else %}
-            <tr>
-                <td colspan="6">
-                    <center>
-                        <h3>You have no recipients</h3>
-                    </center>
-                </td>
-            </tr>
-            {% endif %}
-        </tbody>
-    </table>
-</div>
-</div>
-</div>
+
 </div>
 </div>
 </div>

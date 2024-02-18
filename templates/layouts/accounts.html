@@ -9,6 +9,15 @@
     <link rel="stylesheet" href="/static/custom/css/style.css"> <!-- Link to the external CSS file -->
 </head>
 
+<style>
+    .container .form-control{
+        width: 60vw;
+    }
+    .sm{
+        width: 150px;
+    }
+</style>
+
 <body>
     {% if clue == "account" %}
     <div  class="header-accounts header_desktop" id="mobile-content">
@@ -111,6 +120,7 @@
         <label for="logo" class="logo">{{page_name}}</label>
         <ul>
             <li><a class="btn btn-success to_right" href="/my_payments">History</a></li>
+            <li><a class="btn btn-primary to_right" href="/recents">Recents</a></li>
             <li><a class="btn btn-primary to_right" href="/pay_store">PayCode</a></li>
             <li><a class="btn btn-danger to_right-1" href="/account">Exit</a></li>
         </ul>
@@ -295,6 +305,44 @@
         <ul>
             <li><a class="btn btn-primary" href="">Clients</a></li>
             <li><a class="btn btn-danger to-right" href="/merchant_menu">Exit</a></li>
+        </ul>
+    </div>
+    {% elif page_name == 'recents' %}
+    <div class="header-accounts" id="mobile-content">
+        <div class="row">
+            <div class="col-7">
+                <label for="logo" class="logo">{{page_name}}</label>
+            </div>
+            <div class="col-2">
+                <center>
+                    <a class="btn btn-danger to-right" href="/payments">Exit</a>
+                </center>
+            </div>
+        </div>
+    </div>
+    <div class="header" id="desktop-content">
+        <label for="logo" class="logo">{{page_name}}</label>
+        <ul>
+            <li><a class="btn btn-danger to-right" href="/payments">Exit</a></li>
+        </ul>
+    </div>
+    {% elif page_name == 'recharge success' %}
+    <div class="header-accounts" id="mobile-content">
+        <div class="row">
+            <div class="col-7">
+                <label for="logo" class="logo">{{page_name}}</label>
+            </div>
+            <div class="col-2">
+                <center>
+                    <a class="btn btn-danger to-right" href="/account">Exit</a>
+                </center>
+            </div>
+        </div>
+    </div>
+    <div class="header" id="desktop-content">
+        <label for="logo" class="logo">{{page_name}}</label>
+        <ul>
+            <li><a class="btn btn-danger to-right" href="/account">Exit</a></li>
         </ul>
     </div>
 

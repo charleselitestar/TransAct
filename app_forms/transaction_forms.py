@@ -42,6 +42,7 @@ class Redeem_Paycode(FlaskForm):
     submit = SubmitField('Done')
 
 class Load_Account(FlaskForm):
-    account_number = StringField('account_number', validators=[DataRequired()], render_kw={"placeholder": "Account Number"})
+    account_name = StringField('first_name', validators=[DataRequired()], render_kw={'maxlength': 50, "placeholder": "Enter Account Name", "autofocus": "true"})
+    account_number = StringField('account_number', validators=[DataRequired()], render_kw={'maxlength': 12, "placeholder": "Enter Recipient Account"})
     load_amount = StringField('load_amount', validators=[DataRequired()], render_kw={"placeholder": "Amount"})
     submit = SubmitField('Done')

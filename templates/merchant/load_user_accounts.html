@@ -2,4 +2,18 @@
 
 {% block content %}
 
+
+
+<div class="container">
+    <center>
+        <form method="POST" action="{{url_for('load_account')}}">
+            {{form.csrf_token}}
+            {{form.account_name(class="form-control")}}
+            {{form.account_number(class="form-control")}}
+            {{form.load_amount(class="form-control")}}
+            {{form.submit(class="btn btn-primary")}}
+        </form>
+    </center>
+</div>
+
 {% endblock %}

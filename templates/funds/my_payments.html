@@ -11,8 +11,8 @@
                     <th>Recipient</th>
                     <th>Amount</th>
                     <th>Date</th>
-                    <th class="action">Action</th>
-                    <th class="action">Delete</th>
+                    <th class="action sm">Action</th>
+                    <th class="action sm">Delete</th>
                 </tr>
             </thead>
             <tbody>
@@ -22,13 +22,13 @@
                     <td>{{ payment.account_name }}</td>
                     <td class="{{ balance }}">{{ payment.currency_symbol }} {{ payment.payment_amount }}</td>
                     <td>{{ payment.payment_date }}</td>
-                    <td>
+                    <td class="sm">
                         <form method="POST" action="/view_payment">
                             <input type="hidden" name="view_payment" value="{{ payment.id }}">
                             <button type="submit" class="btn btn-success">View</button>
                         </form>
                     </td>
-                    <td>
+                    <td class="sm">
                         <form method="POST" action="{{ url_for('reverse_payment', payment_id=payment.id) }}">
                             <input type="hidden" name="_method" value="DELETE">
                             <button type="submit" id="delete" class="btn btn-primary">Reverse</button>

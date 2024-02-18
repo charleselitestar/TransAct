@@ -45,11 +45,11 @@
     </center>
 
     <div class="box">
-        <h3>paycode status : {{paycode.status}}</h3>
-        <h3>amount : {{paycode.currency_symbol}} {{paycode.value}}</h3>
-        <h3>reference : {{paycode.reference}}</h3>
-        <h3>date : {{paycode.created_date}}</h3>
-        <h3>time : {{paycode.created_time}}</h3>
+        <h3>paycode status : {{status}}</h3>
+        <h3>amount : {{value}}</h3>
+        <h3>reference : {{reference}}</h3>
+        <h3>date : {{date}}</h3>
+        <h3>time : {{time}}</h3>
     </div>
     <center>
         {% if paycode.status == 'Valid' %}

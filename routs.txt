@@ -1,0 +1,52 @@
+Endpoint                 Methods    Rule                                    
+-----------------------  ---------  ----------------------------------------
+account                  GET        /account                                
+account_limits           GET        /account_limits                         
+activate_funds_account   POST       /activate_funds_account/<int:account_id>
+activate_user_account    POST       /activate_user_account/<int:user_id>    
+app_account_fees         GET, POST  /app_account_fees                       
+collect_user_funds       GET, POST  /collect_funds                          
+complete_user_profile    GET, POST  /complete_user_profile                  
+confirm_payment          GET, POST  /confirm_payment                        
+confirm_user_withdrawal  POST       /confirm_withdrawal                     
+delete_account           POST       /delete_account/<int:account_id>        
+delete_token             POST       /delete_token/<int:token_id>            
+delete_user              POST       /delete_user/<int:user_id>              
+deposits                 GET        /deposits                               
+disable_funds_account    POST       /disable_funds_account/<int:account_id> 
+disable_user_account     POST       /disable_user_account/<int:user_id>     
+elite_website            GET, POST  /elitedocs_website                      
+forgot_password          GET, POST  /forgot_password                        
+fund_account             GET        /fund_account                           
+index                    GET, POST  /                                       
+load_account             GET, POST  /load_account                           
+login                    GET, POST  /login                                  
+logout                   GET        /logout                                 
+menu                     GET, POST  /menu                                   
+merchant_history         GET        /merchant_history                       
+merchant_menu            GET        /merchant_menu                          
+my_paycodes              GET        /my_paycodes                            
+my_payments              GET        /my_payments                            
+pay_again                GET, POST  /pay_again                              
+pay_store                GET, POST  /pay_store                              
+payment_plaque           GET        /payment_plaque                         
+payments                 GET, POST  /payments                               
+pos                      GET, POST  /pos                                    
+profile                  GET        /profile                                
+recents                  GET, POST  /recents                                
+recharge                 POST       /recharge                               
+recharge_tokens          GET, POST  /recharge_tokens                        
+redeem_paycode           GET, POST  /redeem_paycode                         
+register                 GET, POST  /register                               
+reverse_payment          POST       /reverse_payment/<int:payment_id>       
+reverse_token            POST       /reverse_token/<int:token_id>           
+root_accounts            GET, POST  /root_accounts                          
+root_admin               GET, POST  /root_admin                             
+statements               GET, POST  /statements                             
+static                   GET        /static/<path:filename>                 
+update_profile           GET, POST  /update_profile                         
+view_paycode             GET, POST  /view_paycode                           
+view_payment             GET, POST  /view_payment                           
+view_transaction         GET, POST  /view_transaction                       
+withdraw_funds           GET, POST  /withdraw_funds                         
+withdrawals              GET        /withdrawals                            

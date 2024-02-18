@@ -8,6 +8,12 @@
     .form-control{
         width: 35vw;
     }
+    .bal{
+        text-align: right;
+    }
+    .ba{
+        text-align: left;
+    }
     @media screen and (max-width: 768px) {
     .container{
         margin-top: 50px;
@@ -30,9 +36,8 @@
     <hr>
     <div class="container2">
         <div class="row">
-        <center>
-                <div class="col-12 {{balance}}"><h3>Balance : {{formated_account_balance}}</h3></div>
-            </center>
+                <div class="col-6 bal">Balance : </div>
+                <div class="col-6 ba {{balance}}" >{{account_balance}}</div>
         </div>
         </div>
     <center>

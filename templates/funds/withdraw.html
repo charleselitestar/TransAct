@@ -3,6 +3,9 @@
 {% block content %}
 
 <style>
+    .acc{
+        text-align: left;
+    }
     @media (max-width: 768px){
         .container{
             display: grid;
@@ -44,10 +47,21 @@
 
 <div class="container">
     <div class="row">
+        <div class="row">
+            <div class="col">
+                <h1>WithDraw Funds</h1>
+            </div>
+            <div class="col">
+    <div class="col acc">
+        <center class="acc">
+            <center >
+                <h5 class="{{balance}}">account balance : {{account_balance}}</h5>
+            </center>
+            </center>
+    </div>
+            </div>
+        </div>
 
-        <center>
-            <h1>WithDraw Funds</h1>
-        </center>
         <div class="col acc_form">
             <form action="{{url_for('withdraw_funds')}}" method="post">
                 {{form.csrf_token}}
@@ -61,14 +75,7 @@
             </form>
         </div>
 
-    <div class="col acc">
-        <center><h1>Acount Details</h1></center>
-        <cente  r>
-        <h5 class="{{balance}}" >account balance : {{account.currency_symbol}} {{account.account_balance}}</h5>
-        <h5>account name : {{account.account_name}}</h5>
-        <h5>account type : {{account.account_type}}</h5>
-        </center>
-    </div>
+
 
 
 </div>

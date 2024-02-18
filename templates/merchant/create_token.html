@@ -11,6 +11,9 @@
     .container{
         margin-top: 80px;
     }
+    .lf{
+        text-align: right !important;
+    }
     .form-control{
         width: 80vw;
     }
@@ -25,10 +28,13 @@
 
 <div class="container">
     <center><h1>Create Token</h1></center>
+    <center>
         <div class="row">
-            <div class="col-4"><h4>Acc Bal :</h4></div>
-            <div class="col-8 {{balance}} "><h4>{{account_balance}}</h4></div>
-        </div>
+                <div class="col-6 lf"><h4>Balance :</h4></div>
+                
+                <div class="col-6 {{balance}} "><h4>{{account_balance}}</h4></div>
+            </div>
+        </center>
 
     <center>
         <form action="{{ url_for('recharge_tokens')}}" method="post">

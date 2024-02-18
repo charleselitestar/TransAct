@@ -28,24 +28,24 @@
 </style>
 
 <div class="container">
-    <center><h1> {{transaction.transaction_type|capitalize}} Details</h1></center>
+    <center><h1> {{transaction_type|capitalize}} Details</h1></center>
 
     <div class="box">
-    <h3>transaction type : {{transaction.transaction_type}}</h3>
-    <h3>sender : {{transaction.sender_name}}</h3>
-    <h3>recipient : {{transaction.recipient_name}}</h3>
-    <h3>amount : {{transaction.currency_symbol}} {{transaction.transaction_amount}}</h3>
-    <h3>date : {{transaction.transaction_date}}</h3>
-    <h3>time : {{transaction.transaction_time}}</h3>
+    <h3>transaction type : {{transaction_type}}</h3>
+    <h3>sender : {{sender_name}}</h3>
+    <h3>recipient : {{recipient_name}}</h3>
+    <h3>amount : {{amount}}</h3>
+    <h3>date : {{transaction_date}}</h3>
+    <h3>time : {{transaction_time}}</h3>
     </div>
     <center>
-        {% if transaction.transaction_type == 'Payment' %}
+        {% if transaction_type == 'Payment' %}
         <a class="btn btn-primary" href="/account">Pay Again</a>
         <a class="btn btn-success" href="/account">Okay</a>
-        {% elif transaction.transaction_type == 'PayCode' %}
+        {% elif transaction_type == 'PayCode' %}
         <a class="btn btn-primary" href="/account">Recreate</a>
         <a class="btn btn-success" href="/account">Okay</a>
-        {% elif transaction.transaction_type == 'withdrawal' %}
+        {% elif transaction_type == 'withdrawal' %}
         <a class="btn btn-primary" href="/account">Withdraw</a>
         <a class="btn btn-success" href="/account">Okay</a>
         {% else %}
