@@ -1,8 +1,6 @@
-import time
-from threading import Thread
-from ast import With
 from email.mime import application
 from locale import currency
+import time
 from jinja2.exceptions import TemplateNotFound 
 from flask import Flask, render_template, make_response, abort
 from flask_login import (LoginManager,login_user,login_required,logout_user,current_user,)
@@ -36,7 +34,7 @@ from app_forms import App_Account_Fees,Account_limits, Collect_Funds_Form
 
 from app_config.config import Config, logger
 
-from app_modules import country_currency, user_accounts, merchant_accounts, collect_funds, account_notification_message, format_balance, get_date, get_time
+from app_modules import country_currency, user_accounts, merchant_accounts, redeem_funds, account_notification_message, format_balance, get_date, get_time
 from app_modules import withdraw, withdraw_user_funds, confirm_withdrawal, account_charges
 from app_modules import initialize_root, recharge_account
 from app_modules import paycode_notification_message, withdrawal_notification_message, recharge_notification_message
@@ -45,6 +43,9 @@ from app_modules import new_message_alert, paycode_charges, payment_charges, pay
 app = Flask(__name__)
 app.config.from_object(Config)
 bcrypt = Bcrypt(app)
+app.jinja_env.filters['format_balance'] = format_balance
+app.jinja_env.filters['get_date'] = get_date
+app.jinja_env.filters['get_time'] = get_time
 
 ''' 
 hashed_password = os.environ.get("APP_PASSWORD")
@@ -884,20 +885,6 @@ def deposits():
                            )
 
 
-@app.route("/collect_funds", methods=["GET", "POST"])
-@login_required
-def collect_user_funds():
-    if current_user.role != 'Agent':
-        return redirect(url_for('account'))
-    
-    user_id = current_user.id
-    account = Accounts.query.get(user_id)
-
-    if account.account_status == 'disabled':
-        flash('Not Authorised To TransAct')
-        return redirect(url_for('account'))
-    return collect_funds()
-
 @app.route("/payment_plaque")
 @login_required
 def payment_plaque():
@@ -1390,16 +1377,34 @@ def statements():
     deposit_count = Deposits.query.filter_by(user_id=user_id).count()
     paycode_count = Recharge_Tokens.query.filter_by(user_id=user_id).count()
     payment_count = Payments.query.filter_by(user_id=user_id).count()
-    transactions = Transactions.query.filter_by(user_id=user_id).order_by(Transactions.transaction_date.desc()).all()
-    return render_template("funds/statements.html",page_name=page_name,
+    
+    transactions = Transactions.query.filter(
+        (Transactions.user_id == user_id) | (Transactions.recipient_id == user_id)
+    ).order_by(Transactions.transaction_date.desc()).all()
+
+    # Use list comprehension to extract attributes from each transaction
+    transaction_amount = [format_balance(transaction.transaction_amount) for transaction in transactions]
+    before_balance = [format_balance(transaction.before_balance) for transaction in transactions]
+    remaining_balance = [format_balance(transaction.remaining_balance) for transaction in transactions]
+    transaction_dates = [get_date(transaction.transaction_date) for transaction in transactions]
+    transaction_times = [get_time(transaction.transaction_time) for transaction in transactions]
+    
+    return render_template("funds/statements.html", page_name=page_name,
                            account_balance=account_balance,
                            account_name=account_name,
                            transactions=transactions,
+                           transaction_amount=transaction_amount,
+                           before_balance = before_balance,
+                           remaining_balance = remaining_balance,
+                           transaction_dates=transaction_dates,
+                           transaction_times=transaction_times,
                            withdrawal_count=withdrawal_count,
                            deposit_count=deposit_count,
                            paycode_count=paycode_count,
                            payment_count=payment_count,
                            )
+
+    
 
 @app.route("/my_paycodes")
 @login_required
@@ -1500,6 +1505,7 @@ def recharge_tokens():
     currency = account.currency
     currency_symbol = account.currency_symbol
     current_balance = account.account_balance
+    before_balance = current_balance
 
     form = Recharge_Tokens_Form()
     if request.method == "POST" and form.validate_on_submit():
@@ -1564,7 +1570,9 @@ def recharge_tokens():
             sender_account = account.account_number,
             recipient_account = 'pending',
             transaction_type='recharge code',
+            before_balance = before_balance,
             transaction_amount = value,
+            remaining_balance = account.account_balance,
             currency=currency,
             currency_symbol=currency_symbol,
             transaction_date = created_date,
@@ -1656,10 +1664,45 @@ def reverse_payment(payment_id):
 
     return redirect(url_for("my_payments"))
 
-if __name__ == "__main__":
-    # Start the background task in a separate thread
-    bg_thread = Thread(target=amount_update)
-    bg_thread.daemon = True
-    bg_thread.start()
+@app.route('/collect_funds', methods=['GET', 'POST'])
+@login_required
+def collect_funds():
+    page_name = 'redeem funds'
+    role = current_user.role
+    if role != 'Agent':
+        return redirect(url_for('account'))
+    
+    account = Accounts.query.filter_by(user_id=current_user.id).first()
+    if account.account_status == 'disabled':
+        flash('Not Authorised To TransAct')
+        return redirect(url_for('account'))
+    
+    form = Collect_Funds_Form()
+    if request.method == 'POST' and form.validate_on_submit():
+        withdraw_code = form.withdraw_code.data
+        withdraw_pin = form.withdraw_pin.data
+        password = str(withdraw_pin)
+        withdrawal = Withdraw_Codes.query.filter_by(
+            withdraw_code=withdraw_code,
+        ).first()
+        
+        if not withdrawal:
+            flash('withdrawal does not exist')
+            return redirect(url_for('collect_funds'))
+        
+        acc_bal = account.account_balance
+        withdraw_amount = withdrawal.withdraw_amount
+        if withdraw_amount > acc_bal:
+            flash('cant be comple')
+            return redirect(url_for('collect_funds'))
+        
+        hashed_acc_pin = withdrawal.hashed_password
+        if bcrypt.check_password_hash(password, hashed_acc_pin):
+            withdraw_amount = withdraw_code.withdraw_amount
+            return redeem_funds(withdraw_code)
+    
+    return render_template("merchant/collect_funds.html", page_name=page_name, form=form)
+        
 
+if __name__ == "__main__":
     socketio.run(app, debug=True)

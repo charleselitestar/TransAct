@@ -419,6 +419,10 @@ def account_charges(fee_type,price,client_account,account_id):
 def menu():
     pass
 
+def current_date():
+    now = datetime.now()
+    return now.date()
+
 def get_date(date):
     now = date
     year = now.year
@@ -427,58 +431,40 @@ def get_date(date):
     date = f"{year}-{month:02d}-{day:02d}"
     return date
 
+def current_time():
+    now = datetime.now()
+    return now.time()
+
 def get_time(time):
     now = time
     hour = now.hour
     minutes = now.minute
     seconds = now.second
-
     time = f"{hour:02d}:{minutes:02d}:{seconds:02d}"
     return time
 
 
 def format_balance(account_balance):
+    if account_balance is None:
+        return '0.00'
+    
     acb = str(account_balance)
     bal = len(acb)
-    print(bal)
-    if bal == int(4):
-        formatted_balance = '{:.2f}'.format(account_balance)
-        formatted_amount = formatted_balance[:1] + ' ' + formatted_balance[1:]
-        account_balance = formatted_amount
-        return account_balance
-    elif bal == int(5):
-        formatted_balance = '{: .2f}'.format(account_balance)
-        formatted_amount = formatted_balance[:3] + ' ' + formatted_balance[3:]
-        account_balance = formatted_amount
-        return account_balance
-    else :
-        formatted_balance = '{:.2f}'.format(account_balance)
-        formatted_amount = formatted_balance[:3] + ' ' + formatted_balance[3:]
-        account_balance = formatted_amount
-        return account_balance
-    # Get the latest transaction
 
-"""
-def format_balance(account_balance):
-    bal = account_balance
-    print(bal)
-    if bal >= int(1000) < int(10000):
-        formatted_balance = '{:.2f}'.format(bal)
-        formatted_amount = formatted_balance[:1] + ' ' + formatted_balance[1:]
-        account_balance = formatted_amount
-        return account_balance
-    elif bal >= int(10000):
-        formatted_balance = '{: .2f}'.format(bal)
-        formatted_amount = formatted_balance[:3] + ' ' + formatted_balance[3:]
-        account_balance = formatted_amount
-        return account_balance
-    else :
-        formatted_balance = '{:.2f}'.format(bal)
-        formatted_amount = formatted_balance[:3] + ' ' + formatted_balance[3:]
-        account_balance = formatted_amount
-        return account_balance
-    # Get the latest transaction
-"""
+    if bal < 4:
+        return '{:.2f}'.format(account_balance)
+    elif bal == 4:
+        formatted_balance = '{:.2f}'.format(account_balance)
+        return formatted_balance[:1] + ' ' + formatted_balance[1:]
+    elif bal == 5:
+        formatted_balance = '{:.2f}'.format(account_balance)
+        return formatted_balance[:2] + ' ' + formatted_balance[2:]
+    elif bal == 6:
+        formatted_balance = '{:.2f}'.format(account_balance)
+        return formatted_balance[:3] + ' ' + formatted_balance[3:]
+    elif bal > 6:
+        formatted_balance = '{:,.2f}'.format(account_balance)  # added comma for thousands separator
+        return formatted_balance
         
 
 def user_accounts():
@@ -500,9 +486,7 @@ def user_accounts():
         bal = format_balance(account_balance)
         account_balance = f"{currency} {bal}"
 
-        
-
-
+    
         latest_transaction = (
             Transactions.query.filter(or_(
                     Transactions.user_id == user_id,
@@ -767,14 +751,6 @@ def withdraw(withdraw_amount):
         flash("Insufficient Funds. Try a Different amount")
         return redirect(url_for("withdraw_funds"))
     else:
-        created = datetime.now()
-        year = created.year
-        month = created.month
-        day = created.day
-        hours = created.hour
-        minutes = created.minute
-        seconds = created.second
-
         charges = withdraw_charge_calc(withdraw_amount)
         withdrawal_charges(account_id,withdraw_amount)
 
@@ -784,11 +760,10 @@ def withdraw(withdraw_amount):
         account.account_balance = remaining_balance - charges
         db.session.commit()
 
-        created_date = created.date()
-        created_time = created.time()
+        created_date = current_date()
+        created_time = current_time()
         code_status = "active"
 
-        
         # Generate unique withdraw_code and withdraw_pin
         withdraw_code = random.randint(111111111, 999999999)
         withdraw_pin = random.randint(11111, 99999)
@@ -806,12 +781,16 @@ def withdraw(withdraw_amount):
         ):
             withdraw_code = random.randint(111111111, 999999999)
             withdraw_pin = random.randint(11111, 99999)
+            
+            
             existing_withdraw_code = Withdraw_Codes.query.filter_by(
-                withdraw_code=withdraw_code
+                withdraw_code=withdraw_code,
             ).first()
 
+        p_string = str(withdraw_pin)
+        hashed_pin = bcrypt.generate_password_hash(p_string).decode("utf-8")
         withdrawn_funds = Withdrawn_Funds.query.filter_by(
-            withdraw_code=withdraw_code, withdraw_pin=withdraw_pin
+            withdraw_code=withdraw_code,
         ).first()
 
         if withdrawn_funds:
@@ -827,7 +806,7 @@ def withdraw(withdraw_amount):
             currency=currency,
             currency_symbol=currency_symbol,
             withdraw_account=withdraw_account,
-            withdraw_pin=withdraw_pin,
+            withdraw_pin=hashed_pin,
             code_status=code_status,
             created_date=created_date,
             created_time=created_time,
@@ -836,32 +815,32 @@ def withdraw(withdraw_amount):
         db.session.add(withdraw_voucher)
 
         transaction = Transactions(
-            transaction_type = 'withdrawal',
-            transaction_amount = withdraw_amount,
-            before_balance = current_balance,
-            remaining_balance = account.account_balance,
+            transaction_type='withdrawal',
+            transaction_amount=withdraw_amount,
+            before_balance=current_balance,
+            remaining_balance=remaining_balance,
             charges=charges,
             currency=currency,
             currency_symbol=currency_symbol,
-            transaction_date = created_date,
-            transaction_time = created_time,
+            transaction_date=created_date,
+            transaction_time=created_time,
             user_id=user_id,
         )
         db.session.add(transaction)
 
         withdrawal = Withdrawals(
-            account_name = account.account_name,
-            account_type = account.account_type,
-            account_number = account.account_number,
-            currency = account.currency,
-            currency_symbol = currency_symbol,
-            previous_balance = current_balance,
-            withdraw_amount = withdraw_amount,
-            account_balance = account.account_balance,
-            withdraw_status = 'success',
-            withdraw_date = created_date,
-            withdraw_time = created_time,
-            user_id = account.user_id,
+            account_name=account.account_name,
+            account_type=account.account_type,
+            account_number=account.account_number,
+            currency=account.currency,
+            currency_symbol=currency_symbol,
+            previous_balance=current_balance,
+            withdraw_amount=withdraw_amount,
+            account_balance=remaining_balance,
+            withdraw_status='success',
+            withdraw_date=created_date,
+            withdraw_time=created_time,
+            user_id=user_id,
         )
         db.session.add(withdrawal)
         db.session.commit()
@@ -870,14 +849,13 @@ def withdraw(withdraw_amount):
         wa = format_balance(withdraw_amount)
         withdraw_amount = f"{currency_symbol} {wa}"
 
-
         return render_template(
             "funds/withdraw_details.html",
             withdraw_code=withdraw_code,
-            withdraw_pin=withdraw_pin,
+            withdraw_pin=withdraw_pin,  # Use hashed_pin instead of withdraw_pin
             withdraw_amount=withdraw_amount,
             page_name=page_name,
-        )    
+        )
 
 
 def pay(recipient_account,transaction_amount,reference):
@@ -892,7 +870,6 @@ def pay(recipient_account,transaction_amount,reference):
     if not valid_account:
         flash('account does not exist')
         return redirect(url_for('payments'))
-
     else:
         if transaction_amount > current_balance:
             flash("Insufficient funds for this transaction")
@@ -922,6 +899,7 @@ def pay(recipient_account,transaction_amount,reference):
             transaction_amount=transaction_amount,
             transaction_date=payment_date,
             transaction_time=payment_time,
+            recipient_id=valid_account.user_id,
             user_id=user_id,
         )
 
@@ -955,6 +933,7 @@ def pay(recipient_account,transaction_amount,reference):
             reference = reference,
             payment_date = payment_date,
             payment_time = payment_time,
+            recipient_id = recipient.user_id,
             user_id = user_id,
         )
         db.session.add(payment)
@@ -966,108 +945,101 @@ def pay(recipient_account,transaction_amount,reference):
         flash("Payment successful")
         return redirect(url_for("payments"))
 
-def collect_funds():
-    page_name = "redeem funds"
+
+def redeem_funds(withdraw_code):
     user_id = current_user.id
     account = Accounts.query.get(user_id)
-    form = Collect_Funds_Form()
-    if request.method == "POST" and form.validate_on_submit():
-        currency = account.currency
-        currency_symbol = account.currency_symbol
-        current_balance = account.account_balance
-        account_number = account.account_number
-        withdraw_code = int(form.withdraw_code.data)
-        withdraw_pin = int(form.withdraw_pin.data)
-        user_role = current_user.role
+    currency = account.currency
+    currency_symbol = account.currency_symbol
+    current_balance = account.account_balance
+    account_number = account.account_number
 
-        withdrawn_funds = Withdrawn_Funds.query.filter_by(withdraw_code=withdraw_code).first()
-        if withdrawn_funds:
-            flash('token has been redeemed')
-            return redirect(url_for('collect_funds'))
-        try:
-            if user_role == 'Agent':
-                withdrawal = Withdraw_Codes.query.filter_by(
-                    withdraw_code=withdraw_code
-                ).first()
-                action_done = datetime.now()
-                withdraw_date = action_done.date()
-                withdraw_time = action_done.time()
-                withdraw_amount = withdrawal.withdraw_amount
-                withdraw_account_number = withdrawal.withdraw_account
-                withdraw_account = Accounts.query.filter_by(account_number=withdraw_account_number).first()
-                status = withdrawal.code_status
-                code_status = 'withdrawal'
+    withdrawn_funds = Withdrawn_Funds.query.filter_by(withdraw_code=withdraw_code).first()
+    if withdrawn_funds:
+        flash('Token has been redeemed')
+        return redirect(url_for('collect_funds'))
 
-                merchant_amount = get_from_root(withdraw_code)
+    withdrawal = Withdraw_Codes.query.filter_by(withdraw_code=withdraw_code).first()
 
-                account.previous_balance = current_balance
-                account.account_balance += withdrawal.withdraw_amount
-                account.account_balance += merchant_amount
-        
-            withdrawal = Withdraw_Codes.query.filter_by(
-                withdraw_code=withdraw_code, withdraw_pin=withdraw_pin
-            ).first()
+    if not withdrawal:
+        flash("Incorrect voucher or withdrawal pin")
+        return redirect(url_for("collect_funds"))
 
-            if not withdrawal:
-                flash("incorrect voucher or withdrawal pin")
-                return redirect(url_for("collect_funds"))
-            else:
-                action_done = datetime.now()
-                withdraw_date = action_done.date()
-                withdraw_time = action_done.time()
-                action = "withdrawal"
-                code_status = "Success"
+    try:
+        withdraw_amount = withdrawal.withdraw_amount
+        withdraw_account_number = withdrawal.withdraw_account
+        withdraw_account = Accounts.query.filter_by(account_number=withdraw_account_number).first()
+        status = withdrawal.code_status
+        code_status = 'withdrawal'
 
-                withdrawn_funds = Withdrawn_Funds(
-                    withdraw_code=withdraw_code,
-                    withdraw_pin=withdraw_pin,
-                    code_status=code_status,
-                    withdraw_amount=withdraw_amount,
-                    currency=currency,
-                    currency_symbol=currency_symbol,
-                    withdraw_date=withdraw_date,
-                    withdraw_time=withdraw_time,
-                    user_id=user_id,
-                )
-                db.session.add(withdrawn_funds)
-                db.session.commit()
+        merchant_amount = get_from_root(withdraw_code)
 
-                withdrawal = Withdrawals(
-                    account_name=account.account_name,
-                    account_type=account.account_type,
-                    account_number=account.account_number,
-                    currency=currency,
-                    currency_symbol=currency_symbol,
-                    previous_balance=current_balance,
-                    withdraw_amount = withdraw_amount,
-                    account_balance=account.account_balance,
-                    withdraw_date=withdraw_date,
-                    withdraw_time=withdraw_time,
-                    withdraw_status=code_status,
-                    user_id=user_id,
-                )
-                db.session.add(withdrawal)
-                db.session.commit()
+        account.previous_balance = current_balance
+        account.account_balance += withdrawal.withdraw_amount
+        account.account_balance += merchant_amount
 
-                transaction = Transactions(
-                    transaction_type=action,
-                    transaction_amount=withdraw_amount,
-                    currency=currency,
-                    currency_symbol=currency_symbol,
-                    transaction_date=withdraw_date,
-                    transaction_time=withdraw_time,
-                    user_id=user_id,
-                )
-                db.session.add(transaction)
-                db.session.commit()
-                flash('withdrawal success')
+        withdraw_date = current_date()
+        withdraw_time = current_time()
+        action = "withdrawal"
+        code_status = "Success"
 
-        except Exception as e:
-            # Log the exception for debugging
-            flash(f"An error occurred: {str(e)}")
-            db.session.rollback()
+        withdrawn_funds = Withdrawn_Funds(
+            withdraw_code=withdraw_code,
+            withdraw_pin=withdrawal.withdraw_pin,
+            code_status=code_status,
+            withdraw_amount=withdraw_amount,
+            currency=currency,
+            currency_symbol=currency_symbol,
+            withdraw_date=withdraw_date,
+            withdraw_time=withdraw_time,
+            user_id=user_id,
+        )
+        db.session.add(withdrawn_funds)
+        db.session.commit()
 
-        finally:
-            db.session.close()
+        withdrawal = Withdrawals(
+            account_name=account.account_name,
+            account_type=account.account_type,
+            account_number=account.account_number,
+            currency=currency,
+            currency_symbol=currency_symbol,
+            previous_balance=current_balance,
+            withdraw_amount=withdraw_amount,
+            account_balance=account.account_balance,
+            withdraw_date=withdraw_date,
+            withdraw_time=withdraw_time,
+            withdraw_status=code_status,
+            user_id=user_id,
+        )
+        db.session.add(withdrawal)
+        db.session.commit()
 
-    return render_template("merchant/collect_funds.html", page_name=page_name,form=form)
+        transaction = Transactions(
+            transaction_type=action,
+            transaction_amount=withdraw_amount,
+            currency=currency,
+            currency_symbol=currency_symbol,
+            transaction_date=withdraw_date,
+            transaction_time=withdraw_time,
+            user_id=user_id,
+        )
+        db.session.add(transaction)
+        db.session.commit()
+        flash('Withdrawal success')
+
+        return render_template('funds/withdraw_success.html', withdrawal=withdrawal)
+
+    except Exception as e:
+        # Log the exception for debugging
+        flash(f"An error occurred: {str(e)}")
+        db.session.rollback()
+
+    finally:
+        db.session.close()
+
+
+
+
+
+    
+    

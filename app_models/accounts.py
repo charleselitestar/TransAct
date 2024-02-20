@@ -95,6 +95,7 @@ class Transactions(db.Model):
     remaining_balance = db.Column(db.Integer)
     transaction_date = db.Column(db.Date)
     transaction_time = db.Column(db.Time)
+    recipient_id = db.Column(db.Integer)
     user_id = db.Column(db.ForeignKey("user.id"), nullable=False)
 
 class Account_Charges(db.Model):
@@ -133,6 +134,7 @@ class Withdraw_Codes(db.Model):
     withdraw_pin = db.Column(db.Integer)
     code_status = db.Column(db.String(50))
     withdraw_amount = db.Column(db.Integer)
+    hashed_password = db.Column(db.String(100))
     currency = db.Column(db.String(20))
     currency_symbol = db.Column(db.String(5))
     charges = db.Column(db.Integer)

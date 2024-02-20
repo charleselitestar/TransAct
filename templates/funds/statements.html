@@ -1,45 +1,54 @@
+<!-- funds/statements.html -->
 {% extends 'layouts/statements.html' %}
 
 {% block title %}Merchant History{% endblock %}
 
 {% block content %}
-<link rel="stylesheet" href="/static/custom/css/tables.css">
-</style>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 
-<div class="container">
-    <div class="row">
-        <div class="col">Paycodes {{paycode_count}}</div>
-        <div class="col">Withdrawals {{withdrawal_count}}</div>
-        <div class="col">Deposits {{deposit_count}}</div>
-        <div class="col">Payments {{payment_count}}</div>
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col">Paycodes {{ paycode_count }}</div>
+            <div class="col">Withdrawals {{ withdrawal_count }}</div>
+            <div class="col">Deposits {{ deposit_count }}</div>
+            <div class="col">Payments {{ payment_count }}</div>
+        </div>
     </div>
-</div>
 
-<div class="table-responsive">
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>From</th>
-                <th>To</th>
-                <th>Balance</th>
-                <th>Amount</th>
-                <th>Available</th>
-                <th>Date</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for transaction in transactions %}
-            <tr>
-                <td>{{ transaction.sender_name }}</td>
-                <td>{{ transaction.recipient_name }}</td>
-                <th>{{ transaction.currency_symbol }} {{ transaction.before_balance }}</th>
-                <th>{{ transaction.currency_symbol }} {{ transaction.transaction_amount }}</th>
-                <td>{{ transaction.currency_symbol }} {{ transaction.remaining_balance }}</td>
-                <td>{{ transaction.transaction_date.month }} - {{ transaction.transaction_date.day }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
-<script src="/static/heartbeat/heartbeat.js"></script>
+    <div class="container mt-3">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>Balance</th>
+                        <th>Amount</th>
+                        <th>Remaining</th>
+                        <th>Type</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for transaction in transactions %}
+                    <tr>
+                        <td>{{ transaction.sender_name }}</td>
+                        <td>{{ transaction.recipient_name }}</td>
+                        <td>{{ transaction.currency_symbol }} {{ before_balance[loop.index0] }}</td>
+                        <td>{{ transaction.currency_symbol }} {{ transaction_amount[loop.index0] }}</td>
+                        <td>{{ transaction.currency_symbol }} {{ remaining_balance[loop.index0] }}</td>
+                        <td>{{ transaction.transaction_type }} </td>
+                        <td>{{ transaction_dates[loop.index0] }}</td>
+                        <td>{{ transaction_times[loop.index0] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 {% endblock %}
