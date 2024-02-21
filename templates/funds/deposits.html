@@ -1,35 +1,35 @@
 {% extends 'layouts/statements.html' %}
 
-{% block title %}Merchant History{% endblock %}
+{% block title %}Deposit History{% endblock %}
 
 {% block content %}
 <link rel="stylesheet" href="/static/custom/css/tables.css">
 
 <div class="container">
-<div class="table-responsive">
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Acc</th>
-                <th>Balance</th>
-                <th>Amount</th>
-                <th>Available</th>
-                <th>Date</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for deposit in deposits %}
-            <tr>
-                <td>{{ deposit.account_name }}</td>
-                <th>{{ deposit.currency_symbol }} {{ deposit.previous_balance }}</th>
-                <th>{{ deposit.currency_symbol }} {{ deposit.deposit_amount }}</th>
-                <td>{{ deposit.currency_symbol }} {{ deposit.account_balance }}</td>
-                <td>{{ deposit.deposit_date.month }} - {{ deposit.deposit_date.day }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Account Name</th>
+                    <th>Previous Balance</th>
+                    <th>Deposit Amount</th>
+                    <th>Remaining Balance</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for deposit in deposits %}
+                    <tr>
+                        <td>{{ deposit.account_name }}</td>
+                        <td>{{ deposit.currency_symbol }} {{ deposit.previous_balance }}</td>
+                        <td>{{ deposit.currency_symbol }} {{ deposit.deposit_amount }}</td>
+                        <td>{{ deposit.currency_symbol }} {{ deposit.remaining_balance }}</td>
+                        <td>{{ deposit.deposit_date }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
 <script src="/static/heartbeat/heartbeat.js"></script>
 {% endblock %}

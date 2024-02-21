@@ -1,33 +1,33 @@
 {% extends 'layouts/statements.html' %}
 
-{% block title %}Merchant History{% endblock %}
+{% block title %}Withdraw History{% endblock %}
 
 {% block content %}
 <link rel="stylesheet" href="/static/custom/css/tables.css">
 <div class="container">
-<div class="table-responsive">
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Acc</th>
-                <th>Balance</th>
-                <th>Amount</th>
-                <th>Available</th>
-                <th>Time</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for withdrawal in withdrawals %}
-            <tr>
-                <td>{{ withdrawal.account_name }}</td>
-                <th>{{ withdrawal.currency_symbol }} {{ withdrawal.previous_balance }}</th>
-                <th>{{ withdrawal.currency_symbol }} {{ withdrawal.withdraw_amount }}</th>
-                <td>{{ withdrawal.currency_symbol }} {{ withdrawal.account_balance }}</td>
-                <td>{{ withdrawal.withdraw_time.hour}}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Account Name</th>
+                    <th>Previous Balance</th>
+                    <th>Withdraw Amount</th>
+                    <th>Remaining Balance</th>
+                    <th>Withdraw Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for withdrawal in withdrawals %}
+                    <tr>
+                        <td>{{ withdrawal.account_name }}</td>
+                        <td>{{ withdrawal.currency_symbol }} {{ withdrawal.previous_balance }}</td>
+                        <td>{{ withdrawal.currency_symbol }} {{ withdrawal.withdraw_amount }}</td>
+                        <td>{{ withdrawal.currency_symbol }} {{ withdrawal.remaining_balance }}</td>
+                        <td>{{ withdrawal.withdraw_time}}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
 {% endblock %}

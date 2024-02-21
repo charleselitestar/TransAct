@@ -1,4 +1,4 @@
-from flask import render_template, redirect,request,flash,session,url_for
+from flask import render_template, redirect,request,flash,session,url_for, make_response
 from flask_login import current_user
 from app_models import db,Accounts,Account_Charges,Transactions, Withdrawals,Withdrawn_Funds,Withdraw_Codes, Fees, User, Message
 from app_models import Recharge_Tokens, Redeemed_Tokens, Deposits, Recipients, Payments
@@ -13,14 +13,6 @@ import random
 from datetime import datetime
 
 bcrypt = Bcrypt()
-
-    
-def format_funds(funds):
-    if funds > int(1000):
-        format_1 = '{: .2f}'.format(funds)
-        format_2 = format_1[:2] + ' ' + format_1[:2]
-
-        return format_2
 
 def new_message_alert(recipient_id, message):
     sender_name = current_user.first_name
@@ -307,7 +299,6 @@ def deposit_charges(account_id):
     fee_type='deposit charge'
     record_transaction(account_id,price,fee_type)
 
-
 def payment_charge_calc(amount):
     fee = Fees.query.first()
     price = fee.payment_fee
@@ -421,7 +412,8 @@ def menu():
 
 def current_date():
     now = datetime.now()
-    return now.date()
+    date = now.date()
+    return date
 
 def get_date(date):
     now = date
@@ -446,25 +438,31 @@ def get_time(time):
 
 def format_balance(account_balance):
     if account_balance is None:
-        return '0.00'
+        return 'R 0.00'
     
     acb = str(account_balance)
     bal = len(acb)
 
+    currency_symbol = current_user.currency_symbol
+    
     if bal < 4:
-        return '{:.2f}'.format(account_balance)
+        formatted_balance = '{:.2f}'.format(account_balance)
+        formatted_balance = f"{currency_symbol} {formatted_balance}"
     elif bal == 4:
         formatted_balance = '{:.2f}'.format(account_balance)
-        return formatted_balance[:1] + ' ' + formatted_balance[1:]
+        formatted_balance = f"{currency_symbol} {formatted_balance[:1]} {formatted_balance[1:]}"
     elif bal == 5:
         formatted_balance = '{:.2f}'.format(account_balance)
-        return formatted_balance[:2] + ' ' + formatted_balance[2:]
+        formatted_balance = f"{currency_symbol} {formatted_balance[:2]} {formatted_balance[2:]}"
     elif bal == 6:
         formatted_balance = '{:.2f}'.format(account_balance)
-        return formatted_balance[:3] + ' ' + formatted_balance[3:]
+        formatted_balance = f"{currency_symbol} {formatted_balance[:3]} {formatted_balance[3:]}"
     elif bal > 6:
-        formatted_balance = '{:,.2f}'.format(account_balance)  # added comma for thousands separator
-        return formatted_balance
+        formatted_balance = '{:,.2f}'.format(account_balance)
+        formatted_balance = f"{currency_symbol} {formatted_balance}"
+    
+    return formatted_balance
+
         
 
 def user_accounts():
@@ -476,7 +474,6 @@ def user_accounts():
         account = Accounts.query.get(user_id)
         account_balance = account.account_balance
         bal = account.account_balance
-        currency = account.currency_symbol
 
         if bal > 1000:
             balance = 'green'
@@ -484,7 +481,7 @@ def user_accounts():
             balance = 'red'
 
         bal = format_balance(account_balance)
-        account_balance = f"{currency} {bal}"
+        account_balance = bal
 
     
         latest_transaction = (
@@ -625,12 +622,9 @@ def recharge_account():
             db.session.commit()
 
             user_role = current_user.role
-            cb = format_balance(current_balance)
-            current_balance = f"{currency_symbol} {cb}"
-            tv = format_balance(token_value)
-            token_value = f"{currency_symbol} {tv}"
-            rb = format_balance(account.account_balance)
-            remaining_balance = f'{currency_symbol} {rb}'
+            current_balance = format_balance(current_balance)
+            token_value = format_balance(token_value)
+            remaining_balance = format_balance(account.account_balance)
 
             page_name = 'recharge success'
 
@@ -652,8 +646,7 @@ def merchant_accounts():
         else:
             balance = 'red'
 
-        bal = format_balance(account_balance)
-        account_balance = f"{currency} {bal}"
+        account_balance = format_balance(account_balance)
         form = Recharge_Tokens_Form()
         return render_template('merchant/create_token.html',
                                 page_name=page_name,
@@ -712,6 +705,7 @@ def withdraw_user_funds():
             page_name = 'confirm transaction'
             form = Confirm_Withdrawal()
             flash('confirm transaction')
+            withdraw_amount = format_balance(withdraw_amount)
             return render_template('funds/confirm_withdrawal.html', page_name=page_name, withdraw_amount=withdraw_amount, form=form)
 
         return withdraw(withdraw_amount)
@@ -721,7 +715,6 @@ def withdraw_user_funds():
     else:
         balance = 'red'
     account_balance = format_balance(account_balance)
-    account_balance = f"{account.currency_symbol} {account_balance}"
     return render_template("funds/withdraw.html", page_name=page_name, account=account, form=form, account_balance=account_balance, balance=balance)
 
 def confirm_withdrawal(confirm_pin):
@@ -729,10 +722,10 @@ def confirm_withdrawal(confirm_pin):
     account = Accounts.query.get(user_id)
     account_pin_hash = account.account_pin
     withdraw_amount = session.get('withdraw_amount')
+
     if not bcrypt.check_password_hash(account_pin_hash, confirm_pin):
         flash('Incorrect Pin')
-        return redirect('withdraw_funds')
-
+        return redirect(url_for('withdraw_funds'))
     return withdraw(withdraw_amount)
 
 def withdraw(withdraw_amount):
@@ -815,6 +808,8 @@ def withdraw(withdraw_amount):
         db.session.add(withdraw_voucher)
 
         transaction = Transactions(
+            sender_account = account.account_name,
+            recipient_name = account.account_name,
             transaction_type='withdrawal',
             transaction_amount=withdraw_amount,
             before_balance=current_balance,
@@ -846,8 +841,7 @@ def withdraw(withdraw_amount):
         db.session.commit()
 
         # Pass data to the template
-        wa = format_balance(withdraw_amount)
-        withdraw_amount = f"{currency_symbol} {wa}"
+        withdraw_amount = format_balance(withdraw_amount)
 
         return render_template(
             "funds/withdraw_details.html",
@@ -1036,10 +1030,3 @@ def redeem_funds(withdraw_code):
 
     finally:
         db.session.close()
-
-
-
-
-
-    
-    

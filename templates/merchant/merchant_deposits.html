@@ -1,5 +1,35 @@
 {% extends 'layouts/statements.html' %}
 
-{% block content %}
+{% block title %}Merchant History{% endblock %}
 
+{% block content %}
+<link rel="stylesheet" href="/static/custom/css/tables.css">
+
+<div class="container">
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Account Name</th>
+                    <th>Previous Balance</th>
+                    <th>Deposit Amount</th>
+                    <th>Remaining Balance</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for deposit in deposits %}
+                    <tr>
+                        <td>{{ deposit.account_name }}</td>
+                        <td>{{ deposit.currency_symbol }} {{ deposit.previous_balance }}</td>
+                        <td>{{ deposit.currency_symbol }} {{ deposit.deposit_amount }}</td>
+                        <td>{{ deposit.currency_symbol }} {{ deposit.remaining_balance }}</td>
+                        <td>{{ deposit.deposit_date }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+<script src="/static/heartbeat/heartbeat.js"></script>
 {% endblock %}

@@ -80,6 +80,8 @@
                                     <th>Acc</th>
                                     <th>Acc No</th>
                                     <th>Amount</th>
+                                    <th>Date</th>
+                                    <th>Time</th>
                                     <th class="sm">Action</th>
                                 </tr>
                             </thead>
@@ -89,7 +91,9 @@
                                 <tr>
                                     <td>{{ recipient.account_name }}</td>
                                     <td>{{ recipient.account_number }}</td>
-                                    <td>{{ recipient.amount }}</td>
+                                    <td>{{ recipient.account_balance }}</td>
+                                    <td> {{ recipient.payment_date}} </td>
+                                    <td> {{ recipient.payment_time}} </td>
                                     <td class="sm">
                                         <form method="POST" action="/pay_again">
                                             <input type="hidden" name="recipient_account"

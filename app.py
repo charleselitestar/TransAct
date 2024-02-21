@@ -842,23 +842,38 @@ def confirm_user_withdrawal():
 def withdrawals():
     page_name = 'withdrawals'
     user_id = current_user.id
-    account = Accounts.query.get(user_id)
+
+    # Query optimization
+    account = Accounts.query.filter_by(id=user_id).first()
     account_number = account.account_number
+
     withdrawals = Withdrawals.query.filter_by(user_id=user_id).order_by(
         Withdrawals.withdraw_date.desc(),
-        Withdrawals.withdraw_time.desc(),
+        Withdrawals.withdraw_time.desc()
     ).all()
-    
+
+    # Data formatting
+    formatted_withdrawals = [{
+        'account_name': account.account_name.title(),
+        'previous_balance': format_balance(withdrawal.previous_balance),
+        'withdraw_amount': format_balance(withdrawal.withdraw_amount),
+        'remaining_balance': format_balance(withdrawal.account_balance),
+        'withdraw_date': get_date(withdrawal.withdraw_date),
+        'withdraw_time': get_time(withdrawal.withdraw_time)
+    } for withdrawal in withdrawals]
+
     if current_user.role == 'Agent':
         page_name = 'merchant withdrawals'
         return render_template("merchant/merchant_withdrawals.html",
                                page_name=page_name,
-                               withdrawals=withdrawals,
+                               withdrawals=formatted_withdrawals
                                )
-    return render_template("funds/withdrawals.html",
-                           page_name=page_name,
-                           withdrawals=withdrawals,
-                           )
+    else:
+        return render_template("funds/withdrawals.html",
+                               page_name=page_name,
+                               account_number=account_number,
+                               withdrawals=formatted_withdrawals
+                               )
 
 
 @app.route("/deposits", methods=['GET'])
@@ -873,15 +888,28 @@ def deposits():
         Deposits.deposit_time.desc(),
     ).all()
 
+    # Data formatting
+    formatted_deposits = []
+    for deposit in deposits:
+        formatted_deposits.append({
+            'account_name': deposit.account_name.title(),
+            'previous_balance': format_balance(deposit.previous_balance),
+            'deposit_amount': format_balance(deposit.deposit_amount),
+            'remaining_balance': format_balance(deposit.account_balance),
+            'deposit_date': get_date(deposit.deposit_date),
+            'deposit_time': get_time(deposit.deposit_time),
+        })
+
     if current_user.role == 'Agent':
         page_name = 'merchant deposits'
         return render_template("merchant/merchant_deposits.html",
                                page_name=page_name,
-                               deposits=deposits,
+                               deposits=formatted_deposits,
                                )
+    
     return render_template("funds/deposits.html",
                            page_name=page_name,
-                           deposits=deposits,
+                           deposits=formatted_deposits,
                            )
 
 
@@ -1016,18 +1044,28 @@ def view_paycode():
         id = paycode.id,
     )
 
-@app.route('/recents', methods=['GET', 'POST'])
+@app.route('/recents', methods=['GET'])
 def recents():
     page_name = 'recents'
+    
     recipients = Recipients.query.filter_by(user_id=current_user.id).order_by(
         Recipients.creation_date.desc(),
         Recipients.creation_time.desc(),
     ).all()
+
     if not recipients:
-        flash('no recipients')
+        flash('No recipients found.')
         return redirect(url_for('payments'))
-    
-    return render_template('funds/recents.html', page_name=page_name, recipients=recipients)
+
+    formatted_recipients = [{
+        'account_name': recipient.account_name.title(),
+        'account_number' : recipient.account_number,
+        'account_balance': format_balance(recipient.amount),
+        'payment_date': get_date(recipient.creation_date),
+        'payment_time': get_time(recipient.creation_time),
+    } for recipient in recipients]
+
+    return render_template('funds/recents.html', page_name=page_name, recipients=formatted_recipients)
     
 @app.route("/payments", methods=["GET","POST"])
 @login_required
@@ -1045,8 +1083,6 @@ def payments():
             balance = 'red'
 
         account_balance = format_balance(account_balance)
-        account_balance = f"{currency_symbol} {account_balance}"
-
 
         form = Pay_Someone()
         return render_template("funds/payments.html",
@@ -1404,7 +1440,6 @@ def statements():
                            payment_count=payment_count,
                            )
 
-    
 
 @app.route("/my_paycodes")
 @login_required
@@ -1493,11 +1528,11 @@ def app_account_fees():
     print('we ended here')
     return render_template('admin/app_account_fees.html', form=form, page_name=page_name)
 
-
-@app.route("/recharge_tokens", methods=["GET", "POST"])
+@app.route("/recharge_tokens", methods=["POST"])
 @login_required
 def recharge_tokens():
-    page_name = "recharge tokens"
+    form = Recharge_Tokens_Form()
+
     user_id = current_user.id
     user_role = current_user.role
     account = Accounts.query.get(user_id)
@@ -1507,31 +1542,31 @@ def recharge_tokens():
     current_balance = account.account_balance
     before_balance = current_balance
 
-    form = Recharge_Tokens_Form()
-    if request.method == "POST" and form.validate_on_submit():
+    if form.validate_on_submit():
         if account.account_status == 'disabled':
-            flash('Not Authorised To TransAct')
+            flash('Not Authorized To TransAct')
             if current_user.role == 'Agent':
                 return redirect(url_for('menu'))
             return redirect(url_for('account'))
-    
+
         token = random.randint(1111111111, 9999999999)
-        if token:
-            try:
-                int(token)
-            except ValueError:
-                flash("incorrect token try again")
+
+        try:
+            int(token)
+        except ValueError:
+            flash("Incorrect token. Please try again.")
+            return redirect(url_for("recharge_tokens"))
 
         existing_token = Recharge_Tokens.query.filter_by(token=token).first()
         if existing_token:
-            flash("token does exist")
+            flash("Token already exists. Please try again.")
             if user_role == 'Agent':
                 return redirect(url_for('menu'))
             return redirect(url_for("recharge_tokens"))
 
         redeemed_token = Redeemed_Tokens.query.filter_by(token=token).first()
         if redeemed_token:
-            flash("token has been used up")
+            flash("Token has been used up. Please try again.")
             if user_role == 'Agent':
                 return redirect(url_for('menu'))
             return redirect(url_for("recharge_tokens"))
@@ -1539,7 +1574,7 @@ def recharge_tokens():
         value = int(form.value.data)
 
         if value > current_balance:
-            flash('Not Enouph Funds To Procced')
+            flash('Not Enough Funds To Proceed')
             if user_role == 'Agent':
                 return redirect(url_for('menu'))
             return redirect(url_for('recharge_tokens'))
@@ -1562,33 +1597,39 @@ def recharge_tokens():
             user_id=current_user.id,
         )
         db.session.add(new_token)
-        db.session.commit()
 
         transaction = Transactions(
-            sender_name = account.account_name,
-            recipient_name = 'pending',
-            sender_account = account.account_number,
-            recipient_account = 'pending',
+            sender_name=account.account_name,
+            recipient_name='pending',
+            sender_account=account.account_number,
+            recipient_account='pending',
             transaction_type='recharge code',
-            before_balance = before_balance,
-            transaction_amount = value,
-            remaining_balance = account.account_balance,
+            before_balance=before_balance,
+            transaction_amount=value,
+            remaining_balance=account.account_balance,
             currency=currency,
             currency_symbol=currency_symbol,
-            transaction_date = created_date,
-            transaction_time = created_time,
-            user_id = user_id,
+            transaction_date=created_date,
+            transaction_time=created_time,
+            user_id=user_id,
         )
         db.session.add(transaction)
-        db.session.commit()
 
-        flash("token created successfully")
-        val = format_balance(value)
-        value = f"{currency_symbol} {val}"
-        return render_template('merchant/token_details.html', token=token, value=value, page_name=page_name)
+        try:
+            # Commit the changes to the database
+            db.session.commit()
 
-    return render_template("merchant/create_token.html", page_name=page_name, form=form)
+            flash("Token created successfully")
+            value = format_balance(value)
+            page_name = 'recharge success'
+            return render_template('merchant/token_details.html', token=token, value=value, page_name=page_name)
 
+        except Exception as e:
+            # Handle database transaction errors
+            db.session.rollback()
+            flash(f"Error: {str(e)}")
+            return redirect(url_for("recharge_tokens"))
+        
 @app.route("/delete_token/<int:token_id>", methods=["POST"])
 @login_required
 def delete_token(token_id):
@@ -1703,6 +1744,13 @@ def collect_funds():
     
     return render_template("merchant/collect_funds.html", page_name=page_name, form=form)
         
+        
+@app.route('/test')
+def test():
+    bal = 1000000
+    balance = format_balance(bal)
+    print(balance)
+    return f"{balance}"
 
 if __name__ == "__main__":
     socketio.run(app, debug=True)

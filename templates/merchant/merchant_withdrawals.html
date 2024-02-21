@@ -36,32 +36,33 @@
     }
 </style>
 
-<h1>Tansaction History</h1>
+<h1>Transaction History</h1>
 <div class="table-responsive">
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Acc</th>
-            <th>Acc Type</th>
-            <th>previous Bal</th>
-            <th>Amount</th>
-            <th>Balance</th>
-            <th>Date</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for withdrawal in withdrawals %}
-        <tr>
-            <td>{{ withdrawal.account_name }}</td>
-            <td>{{ withdrawal.account_type }}</td>
-            <td>{{withdrawal.currency_symbol}} {{withdrawal.previous_balance}}</td>
-            <th>{{withdrawal.currency_symbol}} {{withdrawal.withdraw_amount}}</th>
-            <td>{{withdrawal.currency_symbol}} {{withdrawal.account_balance}}</td>
-            <th>{{withdrawal.withdraw_date}} </th>
-            <td>{{withdrawal.withdraw_time}} </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Account Name</th>
+                <th>Account Type</th>
+                <th>Previous Balance</th>
+                <th>Withdraw Amount</th>
+                <th>Remaining Balance</th>
+                <th>Date</th>
+                <th>Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for withdrawal in withdrawals %}
+                <tr>
+                    <td>{{ withdrawal.account_name }}</td>
+                    <td>{{ withdrawal.account_type }}</td>
+                    <td>{{ withdrawal.currency_symbol }} {{ withdrawal.previous_balance }}</td>
+                    <td>{{ withdrawal.currency_symbol }} {{ withdrawal.withdraw_amount }}</td>
+                    <td>{{ withdrawal.currency_symbol }} {{ withdrawal.account_balance }}</td>
+                    <td>{{ withdrawal.withdraw_date }}</td>
+                    <td>{{ withdrawal.withdraw_time }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </div>
 {% endblock %}

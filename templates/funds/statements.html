@@ -33,12 +33,12 @@
                 <tbody>
                     {% for transaction in transactions %}
                     <tr>
-                        <td>{{ transaction.sender_name }}</td>
-                        <td>{{ transaction.recipient_name }}</td>
-                        <td>{{ transaction.currency_symbol }} {{ before_balance[loop.index0] }}</td>
-                        <td>{{ transaction.currency_symbol }} {{ transaction_amount[loop.index0] }}</td>
-                        <td>{{ transaction.currency_symbol }} {{ remaining_balance[loop.index0] }}</td>
-                        <td>{{ transaction.transaction_type }} </td>
+                        <td>{{ transaction.sender_name|title }}</td>
+                        <td>{{ transaction.recipient_name|title }}</td>
+                        <td>{{ before_balance[loop.index0] }}</td>
+                        <td>{{transaction_amount[loop.index0] }}</td>
+                        <td>{{ remaining_balance[loop.index0] }}</td>
+                        <td>{{ transaction.transaction_type|title }} </td>
                         <td>{{ transaction_dates[loop.index0] }}</td>
                         <td>{{ transaction_times[loop.index0] }}</td>
                     </tr>
