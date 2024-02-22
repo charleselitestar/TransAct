@@ -16,6 +16,15 @@
     .sm{
         width: 150px;
     }
+@media (max-width: 768px) {
+    .container{
+        margin-top: 50px;
+    }
+    .to_left{
+        position: relative;
+        right: 10px !important;
+    }
+}
 </style>
 
 <body>
@@ -96,22 +105,25 @@
     {% elif page_name == 'payments' %}
     <div class="header-accounts" id="mobile-content">
         <div class="row">
-            <div class="col-5">
-                <label for="logo" class="logo">{{page_name}}</label>
-            </div>
+            <div class="col-3"></div>
             <div class="col-2">
                 <center>
-                <a class="btn btn-success to_right" href="/my_payments">History</a>
+                <a class="btn btn-success" href="/my_payments">History</a>
                 </center>
             </div>
             <div class="col-2">
                 <center>
-                <a class="btn btn-primary to_right" href="/pay_store">PayCode</a>
+                <a class="btn btn-success" href="/recents">Recents</a>
                 </center>
             </div>
             <div class="col-2">
                 <center>
-                <a class="btn btn-danger to_right-1" href="/account">Exit</a>
+                <a class="btn btn-primary" href="/pay_store">PayCode</a>
+                </center>
+            </div>
+            <div class="col-2">
+                <center>
+                <a class="btn btn-danger to-left" href="/account">Exit</a>
                 </center>
             </div>
         </div>
@@ -329,7 +341,7 @@
     {% elif page_name == 'recharge success' %}
     <div class="header-accounts" id="mobile-content">
         <div class="row">
-            <div class="col-7">
+            <div class="col-9">
                 <label for="logo" class="logo">{{page_name}}</label>
             </div>
             <div class="col-2">
@@ -345,7 +357,158 @@
             <li><a class="btn btn-danger to-right" href="/account">Exit</a></li>
         </ul>
     </div>
-
+    {% elif page_name == 'payment success' %}
+    <div class="header-accounts" id="mobile-content">
+        <div class="row">
+            <div class="col-9">
+                <label for="logo" class="logo">{{page_name}}</label>
+            </div>
+            <div class="col-2">
+                <center>
+                    <a class="btn btn-danger to-right" href="/account">Exit</a>
+                </center>
+            </div>
+        </div>
+    </div>
+    <div class="header" id="desktop-content">
+        <label for="logo" class="logo">{{page_name}}</label>
+        <ul>
+            <li><a class="btn btn-danger to-right" href="/account">Exit</a></li>
+        </ul>
+    </div>
+    {% elif page_name == 'withdraw success' %}
+    <div class="header-accounts" id="mobile-content">
+        <div class="row">
+            <div class="col-9">
+                <label for="logo" class="logo">{{page_name}}</label>
+            </div>
+            <div class="col-2">
+                <center>
+                    <a class="btn btn-danger to-right" href="/account">Exit</a>
+                </center>
+            </div>
+        </div>
+    </div>
+    <div class="header" id="desktop-content">
+        <label for="logo" class="logo">{{page_name}}</label>
+        <ul>
+            <li><a class="btn btn-danger to-right" href="/account">Exit</a></li>
+        </ul>
+    </div>
+    {% elif page_name == 'transaction details' %}
+    <div class="header-accounts" id="mobile-content">
+        <div class="row">
+            <div class="col-9">
+                <label for="logo" class="logo">{{page_name}}</label>
+            </div>
+            <div class="col-2">
+                <center>
+                    <a class="btn btn-danger to-right" href="/account">Exit</a>
+                </center>
+            </div>
+        </div>
+    </div>
+    <div class="header" id="desktop-content">
+        <label for="logo" class="logo">{{page_name}}</label>
+        <ul>
+            <li><a class="btn btn-danger to-right" href="/account">Exit</a></li>
+        </ul>
+    </div>
+    {% elif page_name == 'instant paycode' %}
+    <div class="header-accounts" id="mobile-content">
+        <div class="row">
+            <div class="col-9">
+                <label for="logo" class="logo">{{page_name}}</label>
+            </div>
+            <div class="col-2">
+                <center>
+                    <a class="btn btn-danger to-right" href="/account">Exit</a>
+                </center>
+            </div>
+        </div>
+    </div>
+    <div class="header" id="desktop-content">
+        <label for="logo" class="logo">{{page_name}}</label>
+        <ul>
+            <li><a class="btn btn-danger to-right" href="/account">Exit</a></li>
+        </ul>
+    </div>
+    {% elif page_name == 'payment details' %}
+    <div class="header-accounts" id="mobile-content">
+        <div class="row">
+            <div class="col-9">
+                <label for="logo" class="logo">{{page_name}}</label>
+            </div>
+            <div class="col-2">
+                <center>
+                    <a class="btn btn-danger to-right" href="/account">Exit</a>
+                </center>
+            </div>
+        </div>
+    </div>
+    <div class="header" id="desktop-content">
+        <label for="logo" class="logo">{{page_name}}</label>
+        <ul>
+            <li><a class="btn btn-danger to-right" href="/account">Exit</a></li>
+        </ul>
+    </div>
+    {% elif page_name == 'paycode details' %}
+    <div class="header-accounts" id="mobile-content">
+        <div class="row">
+            <div class="col-9">
+                <label for="logo" class="logo">{{page_name}}</label>
+            </div>
+            <div class="col-2">
+                <center>
+                    <a class="btn btn-danger to-right" href="/account">Exit</a>
+                </center>
+            </div>
+        </div>
+    </div>
+    <div class="header" id="desktop-content">
+        <label for="logo" class="logo">{{page_name}}</label>
+        <ul>
+            <li><a class="btn btn-danger to-right" href="/account">Exit</a></li>
+        </ul>
+    </div>
+    {% elif page_name == 'confirm withdrawal' %}
+    <div class="header-accounts" id="mobile-content">
+        <div class="row">
+            <div class="col-9">
+                <label for="logo" class="logo">{{page_name}}</label>
+            </div>
+            <div class="col-2">
+                <center>
+                    <a class="btn btn-danger to-right" href="/account">Exit</a>
+                </center>
+            </div>
+        </div>
+    </div>
+    <div class="header" id="desktop-content">
+        <label for="logo" class="logo">{{page_name}}</label>
+        <ul>
+            <li><a class="btn btn-danger to-right" href="/account">Exit</a></li>
+        </ul>
+    </div>
+    {% elif page_name == 'confirm payment' %}
+    <div class="header-accounts" id="mobile-content">
+        <div class="row">
+            <div class="col-9">
+                <label for="logo" class="logo">{{page_name}}</label>
+            </div>
+            <div class="col-2">
+                <center>
+                    <a class="btn btn-danger to-right" href="/account">Exit</a>
+                </center>
+            </div>
+        </div>
+    </div>
+    <div class="header" id="desktop-content">
+        <label for="logo" class="logo">{{page_name}}</label>
+        <ul>
+            <li><a class="btn btn-danger to-right" href="/account">Exit</a></li>
+        </ul>
+    </div>
 
 
 

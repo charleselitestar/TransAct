@@ -72,22 +72,16 @@
     <center>
         <div class="row">
             <div class="col">
-                <h1>Pay Account</h1>
+                <h2> {{page_name|title}} </h2>
             </div>
             <div class="col">
-<div class="col-12 col-md">
-    <center>
-        <div class="row">
-            <div class="col-6 bal">
-                <h5>Acc Balance :</h5>
-            </div>
-            <div class="col-6 col-md-3 {{balance}}">
-                <h5>{{ account_balance }}</h5>
-            </div>
-        </div>
-    </center>
-            </div>
-        </div>
+                <div class="col {{balance}} ">
+                    <h4>Acc  : {{ account_balance }}</h4>
+                </div>
+            </center>
+    </div>
+    <div class="row">
+<center>
         <form action="{{ url_for('payments') }}" method="post">
             {{ form.csrf_token }}
             <div class="form-group">

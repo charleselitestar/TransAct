@@ -1,4 +1,4 @@
-{% extends 'layouts/statements.html' %}
+{% extends 'layouts/accounts.html' %}
 
 {% block content %}
 
@@ -29,11 +29,13 @@
         }
         .btn-danger {
             font-weight: bolder;
-            width: 40vw;
         }
         .btn-warning {
             font-weight: bolder;
-            color: rgb(71, 1, 1);
+            padding: 0px;
+            width: 40vw;
+        }
+        .del{
             width: 40vw;
         }
     }
@@ -59,7 +61,7 @@
             <a class="btn btn-success" href="/my_paycodes">Okay</a>
         </form>
         {% else %}
-        <a class="btn btn-danger" href="/delete">Delete</a>
+        <a class="btn btn-danger del" href="/delete">Delete</a>
         <a class="btn btn-success" href="/my_paycodes">Okay</a>
         {% endif %}
     </center>

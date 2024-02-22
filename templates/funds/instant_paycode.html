@@ -1,4 +1,4 @@
-{% extends 'layouts/recharge.html' %}
+{% extends 'layouts/accounts.html' %}
 
 {% block content %}
 
@@ -35,6 +35,7 @@
     <div class="success-container">
         <h1 class="display-4">Withdraw Success</h1>
 
+        <br>
         <h4 class="mb-4">Voucher Code: {{ pay_code }}</h4>
         <h4 class="mb-4">Token Amount: {{pay_amount}} </h4>
         <h4 class="mb-4">Account Balance: {{ remaining_balance }}</h4>

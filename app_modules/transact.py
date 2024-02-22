@@ -842,7 +842,7 @@ def withdraw(withdraw_amount):
 
         # Pass data to the template
         withdraw_amount = format_balance(withdraw_amount)
-
+        page_name = 'withdraw success'
         return render_template(
             "funds/withdraw_details.html",
             withdraw_code=withdraw_code,
@@ -935,9 +935,23 @@ def pay(recipient_account,transaction_amount,reference):
 
         account_notification_message(recipient_account,transaction_amount)
 
-        db.session.close()
         flash("Payment successful")
-        return redirect(url_for("payments"))
+        page_name = 'payment success'
+        previous_balance = format_balance(account.previous_balance)
+        payment_amount = format_balance(transaction_amount)
+        remaining_balance = format_balance(account.previous_balance) 
+        date = get_date(payment_date)
+        time = get_time(payment_time)
+        
+        return render_template('funds/payment_success.html',
+                               page_name=page_name,
+                               payment=payment,
+                               previous_balance=previous_balance,
+                               payment_amount=payment_amount,
+                               remaining_balance=remaining_balance,
+                               date=date,
+                               time=time,
+                               )
 
 
 def redeem_funds(withdraw_code):

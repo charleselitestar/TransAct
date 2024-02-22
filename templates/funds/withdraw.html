@@ -12,6 +12,7 @@
             grid-template-columns: 1fr;
             grid-template-rows: 1fr 1fr;
             min-height: 70vh;
+            width: 90vw;
             border-radius: 10px;
             background-color: rgb(151, 161, 161);
         }
@@ -28,6 +29,7 @@
             border: 1px solid black;
             height: 30vh;
             margin: 10px;
+            width: 82vw;
             background-color: rgb(219, 231, 241);
             border-radius: 10px;
         }
@@ -47,37 +49,33 @@
 
 <div class="container">
     <div class="row">
+        <div class="col">
+            <h1>WithDraw Funds</h1>
+        </div>
+        <div class="col">
+            <h5 class="{{balance}}">Bal: {{account_balance}}</h5>
+        </div>
         <div class="row">
-            <div class="col">
-                <h1>WithDraw Funds</h1>
-            </div>
-            <div class="col">
-    <div class="col acc">
-        <center class="acc">
-            <center >
-                <h5 class="{{balance}}">account balance : {{account_balance}}</h5>
-            </center>
-            </center>
-    </div>
-            </div>
+
+            
+<center>    
+    <div class="col acc_form">
+    <form action="{{url_for('withdraw_funds')}}" method="post">
+        {{form.csrf_token}}
+        <center>
+            <label for="withdraw_amount">Enter Withdraw Amount
+                {{form.withdraw_amount(class="form-control")}}
+            </label>
+            <br>
+            {{form.submit(class="btn btn-primary")}}
+        </center>
+    </form>
+</div>
+</center>
+
+
+
         </div>
-
-        <div class="col acc_form">
-            <form action="{{url_for('withdraw_funds')}}" method="post">
-                {{form.csrf_token}}
-                <center>
-                    <label for="withdraw_amount">Enter Withdraw Amount
-                        {{form.withdraw_amount(class="form-control")}}
-                    </label>
-                    <br>
-                    {{form.submit(class="btn btn-primary")}}
-                </center>
-            </form>
-        </div>
-
-
-
-
 </div>
 </div>
 

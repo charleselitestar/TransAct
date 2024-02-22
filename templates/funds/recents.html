@@ -95,17 +95,7 @@
                                     <td> {{ recipient.payment_date}} </td>
                                     <td> {{ recipient.payment_time}} </td>
                                     <td class="sm">
-                                        <form method="POST" action="/pay_again">
-                                            <input type="hidden" name="recipient_account"
-                                                value="{{ recipient.account_number }}">
-                                            <input type="hidden" name="recipient_name" id=""
-                                                value="{{ recipient.account_name }}">
-                                            <input type="hidden" name="transaction_amount" id="transaction_amount"
-                                                value="{{ recipient.amount }}">
-                                            <input type="hidden" name="date" id="date"
-                                                value="{{ recipient.creation_date }}">
-                                            <input type="hidden" name="time" id="time"
-                                                value="{{ recipient.creation_time }}">
+                                        <form method="POST" action="{{url_for('pay_again', payment_id=recipient.user_id) }}">
                                             <button type="submit" class="btn btn-success">Pay Again</button>
                                         </form>
                                     </td>

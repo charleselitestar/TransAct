@@ -983,9 +983,7 @@ def view_payment():
             flash('payment does not exist')
             return redirect(url_for('account'))
         
-        currency = payment.currency_symbol
         amount = format_balance(payment.payment_amount)
-        amount = f"{currency} {amount}"
 
         payment_date = get_date(payment.payment_date)
         payment_time = get_time(payment.payment_time)
@@ -1023,9 +1021,7 @@ def view_paycode():
         ).count()
 
     value = format_balance(paycode.value)
-    currency = paycode.currency_symbol
-    value = f"{currency} {value}"
-
+    
     date = get_date(paycode.created_date)
     time = get_time(paycode.created_time)
 
@@ -1119,9 +1115,9 @@ def payments():
             return redirect(url_for('confirm_payment'))
     return pay(recipient_account,transaction_amount,reference)
 
-@app.route("/pay_again", methods=['GET', 'POST'])
+@app.route("/pay_again/<int:payment_id>", methods=['GET', 'POST'])
 @login_required
-def pay_again():
+def pay_again(payment_id):
     if request.method == 'POST':
         user_id = current_user.id
         account = Accounts.query.get(user_id)
@@ -1273,10 +1269,8 @@ def pay_store():
             )
             db.session.add(transaction)
             db.session.commit()
-            rb = format_balance(transaction.remaining_balance)
-            remaining_balance = f"{currency_symbol} {rb}"
-            pa = format_balance(pay_amount)
-            pay_amount = f"{currency_symbol} {pa}"
+            remaining_balance = format_balance(transaction.remaining_balance)
+            pay_amount = format_balance(pay_amount)
             return render_template('funds/instant_paycode.html', 
                                    page_name=page_name,
                                    pay_code=pay_code,
@@ -1621,7 +1615,7 @@ def recharge_tokens():
 
             flash("Token created successfully")
             value = format_balance(value)
-            page_name = 'recharge success'
+            page_name = 'token details'
             return render_template('merchant/token_details.html', token=token, value=value, page_name=page_name)
 
         except Exception as e:

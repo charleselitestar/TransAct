@@ -185,3 +185,13 @@ class Limits(db.Model):
     weekly = db.Column(db.Integer)
     monthly = db.Column(db.Integer)
     user_id = db.Column(db.ForeignKey("user.id"), nullable=False)
+
+class Stockvells(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    club_name = db.Column(db.String(50))
+    club_type = db.Column(db.String(50))
+    club_amount = db.Column(db.Integer)
+    due_date = db.Column(db.Date)
+    payment_deadline = db.Column(db.Date)
+    created_date = db.Column(db.Date)
+    created_time = db.Column(db.Time)
